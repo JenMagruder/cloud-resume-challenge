@@ -138,8 +138,7 @@ This project is my implementation of the [Cloud Resume Challenge](https://cloudr
 ---
 
 ## 📝 Blog Post
-
-*Coming soon: Detailed write-up of challenges faced and lessons learned*
+[Read about my experience on Medium](https://medium.com/@stratajen/cloud-resume-challenge-56cf59bd681c)
 
 ---
 
