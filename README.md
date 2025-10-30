@@ -23,7 +23,7 @@ This project is my implementation of the [Cloud Resume Challenge](https://cloudr
 
 ## 🏗️ Architecture
 
-*(Architecture diagram will be added here)*
+![Architecture Diagram](images/Cloud-Resume-Architecture.png)
 
 ### Frontend
 - **Hosting:** AWS S3 (static website)
