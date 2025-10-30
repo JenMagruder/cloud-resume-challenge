@@ -1,0 +1,51 @@
+# AWS Credentials - NEVER commit these!
+*.pem
+*.key
+.aws/
+credentials
+config
+
+# Environment variables
+.env
+.env.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+*.egg-info/
+
+# Node/JavaScript
+node_modules/
+npm-debug.log*
+package-lock.json
+
+# OS files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Terraform (for when you do the extension later)
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+.terraform/
+*.tfvars
+.terraform.lock.hcl
+
+# General
+*.log
+*.tmp
+.cache/
+dist/
+build/
+
+# Test coverage
+.coverage
+htmlcov/
