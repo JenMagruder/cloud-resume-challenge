@@ -1,167 +1,215 @@
 # Cloud Resume Challenge
 
-A serverless resume website built on AWS, featuring a real-time visitor counter and automated CI/CD deployment pipeline.
+A serverless resume website built on AWS, featuring a real-time visitor counter, automated CI/CD deployment pipeline, and comprehensive analytics system.
 
-🌐 **Website:** [stratajen.net](https://stratajen.net)
+🌐 **Live Website:** [stratajen.net](https://stratajen.net)
+📝 **Blog Post:** [Read about my experience on Medium](https://medium.com/@stratajen)
 
 ---
 
 ## 📋 Project Overview
 
-This project is my implementation of the [Cloud Resume Challenge](https://cloudresumechallenge.dev/), demonstrating hands-on experience with AWS services, serverless architecture, and DevOps practices.
-
-### Key Features
-
-- ✅ **Serverless Architecture** - No servers to manage, scales automatically
-- ✅ **Real-Time Visitor Counter** - Tracks unique visitors using DynamoDB and Lambda
-- ✅ **Custom Domain with HTTPS** - Secure delivery via CloudFront CDN
-- ✅ **CI/CD Pipeline** - Automated deployments with GitHub Actions
-- ✅ **Infrastructure as Code** - Reproducible deployments (coming soon: Terraform)
-- ✅ **CORS-Compliant API** - Proper handling of preflight requests
+This project is my implementation of the [Cloud Resume Challenge](https://cloudresumechallenge.dev/), demonstrating hands-on experience with AWS services, serverless architecture, DevOps practices, and data analytics.
 
 ---
 
 ## 🏗️ Architecture
 
-![Architecture Diagram](images/Cloud-Resume-Architecture.png)
-
 ### Frontend
-- **Hosting:** AWS S3 (static website)
-- **CDN:** CloudFront with HTTPS
-- **DNS:** Route 53 with custom domain
-- **SSL/TLS:** AWS Certificate Manager
+- **S3** - Static website hosting
+- **CloudFront** - CDN with HTTPS
+- **Route 53** - Custom domain management
+- **ACM** - SSL/TLS certificate
 
-### Backend
-- **Database:** DynamoDB (visitor count storage)
-- **Compute:** AWS Lambda (Python 3.12)
-- **API:** API Gateway (HTTP API)
-- **Architecture Pattern:** Serverless, event-driven
+### Backend (Visitor Counter)
+- **API Gateway** - RESTful API endpoint
+- **Lambda** - Python function with atomic counter logic
+- **DynamoDB** - Visitor count storage
+- **CORS** - Cross-origin resource sharing configuration
 
-### DevOps
-- **Version Control:** GitHub
-- **CI/CD:** GitHub Actions
-- **Deployment:** Automated sync to S3 + CloudFront invalidation
+### Analytics System
+- **CloudFront Access Logs** - Real-time request logging
+- **S3** - Log file storage
+- **Athena** - SQL queries on log data
+- **Lambda** - Daily analytics processing
+- **SNS** - Email notification delivery
+- **EventBridge** - Scheduled daily triggers (8am EST)
+
+### CI/CD Pipeline
+- **GitHub Actions** - Automated deployment workflow
+- **AWS CLI** - S3 sync and CloudFront invalidation
+- **GitHub Secrets** - Secure credential management
+
+---
+
+## 📊 Analytics Features
+
+The automated analytics system provides daily insights:
+
+- **Traffic Overview**: Total visits, unique visitors, days tracked
+- **Daily Reports**: Yesterday's traffic breakdown
+- **Page Analytics**: Most visited pages
+- **Geographic Distribution**: Visitor locations via CloudFront edge locations
+- **Visitor Tracking**: Top IP addresses (with personal IPs filtered)
+
+**Email Reports Delivered Daily at 8:00 AM EST**
+
+### Analytics Architecture Flow
+```
+CloudFront Access Logs → S3 Bucket → Athena SQL Queries → Lambda Function → SNS Email → Daily Report
+                                            ↑
+                                      EventBridge Scheduler
+                                      (Triggers at 8am EST)
+```
 
 ---
 
 ## 🛠️ Technologies Used
 
-**Cloud Platform:**
-- AWS (S3, CloudFront, Route 53, Lambda, DynamoDB, API Gateway, ACM, IAM)
+**Frontend:**
+- HTML5, CSS3, JavaScript
+- Responsive design
 
-**Programming:**
-- Python (Lambda backend)
-- JavaScript (Frontend visitor counter logic)
-- HTML/CSS (Responsive design)
+**Backend:**
+- Python 3.13
+- Boto3 (AWS SDK)
+- JSON data handling
+
+**AWS Services:**
+- S3, CloudFront, Route 53, ACM
+- Lambda, API Gateway, DynamoDB
+- Athena, SNS, EventBridge
+- IAM (Identity and Access Management)
 
 **DevOps:**
-- GitHub Actions (CI/CD)
-- Git (Version control)
-- AWS CLI
-
-**Future Additions:**
-- Terraform (Infrastructure as Code)
-- Cypress (End-to-end testing)
+- GitHub Actions
+- Infrastructure as Code principles
+- Automated testing and deployment
 
 ---
 
-## 🚀 How It Works
+## 📁 Project Structure
 
-### Visitor Counter Flow
-
-1. User visits `stratajen.net`
-2. JavaScript makes POST request to API Gateway
-3. API Gateway triggers Lambda function
-4. Lambda atomically increments count in DynamoDB
-5. Updated count returns to frontend
-6. Visitor sees: "You are visitor #42"
-
-### Deployment Flow
-
-1. Developer pushes code to GitHub
-2. GitHub Actions workflow triggers automatically
-3. Files sync to S3 bucket
-4. CloudFront cache invalidates
-5. Website updates live within 2-3 minutes
-
----
-
-## 💡 Key Learnings
-
-### Technical Challenges Solved
-
-**CORS Configuration:**
-- Learned the difference between simple and preflight requests
-- Implemented OPTIONS request handling in Lambda
-- Configured proper CORS headers for cross-origin API calls
-
-**Lambda Permissions:**
-- Set up IAM roles with least-privilege access
-- Configured execution role for DynamoDB access
-
-**CloudFront Caching:**
-- Implemented cache invalidation in CI/CD pipeline
-- Balanced performance with content freshness
-
-**Atomic Updates:**
-- Used DynamoDB's atomic counter operations
-- Ensured accurate visitor counting under concurrent requests
-
-### DevOps Skills Gained
-
-- Built end-to-end CI/CD pipeline from scratch
-- Automated infrastructure deployment
-- Implemented proper secrets management with GitHub Secrets
-- Learned the importance of testing in isolated environments
+```
+cloud-resume-challenge/
+├── frontend/
+│   ├── index.html          # Resume website
+│   ├── styles.css          # Styling
+│   └── script.js           # Visitor counter JavaScript
+├── backend/
+│   └── lambda_function.py  # Visitor counter Lambda
+├── analytics/
+│   └── analytics_lambda.py # Analytics Lambda function
+├── .github/
+│   └── workflows/
+│       └── deploy.yml      # CI/CD pipeline
+└── README.md
+```
 
 ---
 
-## 📊 Project Stats
+## 🚀 Deployment
 
-- **Lines of Code:** ~1,000+
-- **AWS Services Used:** 8
-- **Deployment Time:** ~2 minutes (automated)
-- **Cost:** <$2/month
-- **Uptime:** 99.9%+
+### Prerequisites
+- AWS Account
+- GitHub Account
+- Custom domain (optional)
+
+### Setup Steps
+
+1. **Frontend Deployment**
+   - Create S3 bucket with static website hosting
+   - Upload HTML/CSS/JS files
+   - Configure CloudFront distribution
+   - Set up Route 53 and ACM certificate
+
+2. **Backend Setup**
+   - Create DynamoDB table
+   - Deploy Lambda function
+   - Configure API Gateway
+   - Set up CORS
+
+3. **Analytics Configuration**
+   - Enable CloudFront access logging
+   - Create Athena database and table
+   - Deploy analytics Lambda function
+   - Configure SNS topic and subscription
+   - Set up EventBridge schedule
+
+4. **CI/CD Pipeline**
+   - Configure GitHub Actions workflow
+   - Add AWS credentials to GitHub Secrets
+   - Test automated deployment
 
 ---
 
-## 🎯 Future Enhancements
+## 🔐 IAM Permissions
 
-- [ ] Convert infrastructure to Terraform (IaC)
-- [ ] Add CloudWatch monitoring and alarms
-- [ ] Implement end-to-end testing with Cypress
-- [ ] Optimize API performance with CloudFront caching
-- [ ] Add DynamoDB point-in-time recovery
-- [ ] Implement blue/green deployments
+### CI/CD User Permissions:
+- S3 read/write access
+- CloudFront cache invalidation
+
+### Analytics Lambda Permissions:
+- Athena query execution
+- S3 read access (CloudFront logs)
+- SNS publish
+
+---
+
+## 📈 Key Learnings
+
+- **Serverless Architecture**: Designing scalable, cost-effective solutions
+- **API Integration**: Building and securing RESTful APIs
+- **Data Analytics**: SQL queries on CloudFront access logs using Athena
+- **Automation**: Event-driven architecture with EventBridge
+- **DevOps**: CI/CD pipelines with GitHub Actions
+- **AWS Services**: Hands-on experience with 10+ AWS services
+- **Problem Solving**: Debugging CORS, CloudFront caching, IAM permissions
+
+---
+
+## 💰 Cost Optimization
+
+- Serverless architecture: Pay only for usage
+- CloudFront caching: Reduced origin requests
+- S3 lifecycle policies: Automatic log cleanup
+- DynamoDB on-demand: No unused capacity charges
+
+**Estimated monthly cost: < $2**
+
+---
+
+## 🔮 Future Enhancements
+
+- [ ] Infrastructure as Code with Terraform
+- [ ] Enhanced monitoring with CloudWatch dashboards
+- [ ] A/B testing for resume layout
+- [ ] Multi-region deployment
+- [ ] Advanced analytics (conversion tracking, heatmaps)
 
 ---
 
 ## 📝 Blog Post
-[Read about my experience on Medium](https://medium.com/@stratajen/cloud-resume-challenge-56cf59bd681c)
+
+Read about my experience building this project: [Medium Blog Post](https://medium.com/@stratajen)
+
+---
+
+## 📧 Contact
+
+Jennifer Magruder
+- **Email**: strataspherejen@gmail.com
+- **LinkedIn**: [jennifer-magruder](https://www.linkedin.com/in/jennifer-magruder)
+- **Website**: [stratajen.net](https://stratajen.net)
 
 ---
 
 ## 🙏 Acknowledgments
 
-- [The Cloud Resume Challenge](https://cloudresumechallenge.dev/) - Created by Forrest Brazeal, owned and maintained by ExamPro and Andrew Brown
-- AWS Documentation and tutorials
-- The cloud engineering community
+- [Forrest Brazeal](https://forrestbrazeal.com/) for creating the Cloud Resume Challenge
+- AWS documentation and community
+- Fellow cloud engineers for inspiration and support
 
 ---
 
-## 📬 Connect With Me
-
-- **LinkedIn:** [Jennifer Magruder](https://www.linkedin.com/in/jennifer-magruder/)
-- **GitHub:** [@JenMagruder](https://github.com/JenMagruder)
-- **Website:** [stratajen.net](https://stratajen.net)
-
----
-
-## 📄 License
-
-This project is open source and available for learning purposes.
-
----
-
-*Built with ☁️ by Jennifer Magruder*
+**⭐ If you found this project helpful, please consider giving it a star!**
