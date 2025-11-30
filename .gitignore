@@ -31,7 +31,7 @@ Thumbs.db
 .vscode/
 *.swp
 
-# Terraform (for when you do the extension later)
+# Terraform
 *.tfstate
 *.tfstate.*
 *.tfstate.backup
