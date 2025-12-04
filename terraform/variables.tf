@@ -11,3 +11,8 @@ variable "aws_region" {
   type        = string
   default     = "us-east-1"
 }
+
+variable "dynamodb_table_name" {
+  description = "DynamoDB table name for visitor counter"
+  type        = string
+}
