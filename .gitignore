@@ -38,6 +38,7 @@ Thumbs.db
 .terraform/
 *.tfvars
 .terraform.lock.hcl
+*.zip
 
 # General
 *.log
