@@ -16,3 +16,12 @@ variable "dynamodb_table_name" {
   description = "DynamoDB table name for visitor counter"
   type        = string
 }
+variable "lambda_function_name" {
+  description = "Lambda function name for visitor counter"
+  type        = string
+}
+
+variable "lambda_zip_path" {
+  description = "Path to Lambda deployment package (zip file)"
+  type        = string
+}

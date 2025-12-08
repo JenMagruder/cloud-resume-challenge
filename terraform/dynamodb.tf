@@ -1,5 +1,5 @@
 # DynamoDB Table for Visitor Counter
-# Stores the visitor count for the cloud resume website
+# Stores the visitor count for the cloud website
 
 resource "aws_dynamodb_table" "visitor_counter" {
   name           = var.dynamodb_table_name
