@@ -25,3 +25,17 @@ variable "lambda_zip_path" {
   description = "Path to Lambda deployment package (zip file)"
   type        = string
 }
+variable "domain_name" {
+  description = "Custom domain name"
+  type        = string
+}
+
+variable "acm_certificate_arn" {
+  description = "ACM certificate ARN for HTTPS"
+  type        = string
+}
+
+variable "cloudfront_logs_bucket" {
+  description = "S3 bucket for CloudFront logs"
+  type        = string
+}

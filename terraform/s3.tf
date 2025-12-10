@@ -23,3 +23,29 @@ resource "aws_s3_bucket_website_configuration" "website" {
     key = "error.html"
   }
 }
+# S3 Bucket for CloudFront Logs
+resource "aws_s3_bucket" "cloudfront_logs" {
+  bucket = var.cloudfront_logs_bucket
+
+  tags = {
+    Name        = "CloudFront Access Logs"
+    Environment = "Production"
+    ManagedBy   = "Terraform"
+  }
+}
+
+# Enable ACLs for CloudFront logging
+resource "aws_s3_bucket_ownership_controls" "cloudfront_logs" {
+  bucket = aws_s3_bucket.cloudfront_logs.id
+
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
+resource "aws_s3_bucket_acl" "cloudfront_logs" {
+  depends_on = [aws_s3_bucket_ownership_controls.cloudfront_logs]
+  
+  bucket = aws_s3_bucket.cloudfront_logs.id
+  acl    = "log-delivery-write"
+}
