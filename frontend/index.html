@@ -104,6 +104,16 @@
                     <h3>Infrastructure as Code</h3>
                     <p>Terraform - Managing AWS infrastructure with version control and automation</p>
                 </a>
+                <a href="https://github.com/" class="skill-box" target="_blank">
+                    <i class="fab fa-github"></i>
+                    <h3>Version Control & CI/CD</h3>
+                    <p>Git, GitHub, GitHub Actions - automated deployment pipelines and infrastructure version control</p>
+                </a>
+                <a href="https://www.linux.org/" class="skill-box" target="_blank">
+                    <i class="fab fa-linux"></i>
+                    <h3>Linux & Scripting</h3>
+                    <p>Ubuntu, Amazon Linux - command line operations, Bash scripting, and system administration</p>
+                </a>
                 <a href="https://streamlit.io/" class="skill-box" target="_blank">
                     <i class="fas fa-stream"></i>
                     <h3>Development Frameworks</h3>
@@ -113,11 +123,6 @@
                     <i class="fas fa-brain"></i>
                     <h3>Machine Learning</h3>
                     <p>PyTorch, Neural Networks, Computer Vision, and OCR implementation</p>
-                </a>
-                <a href="https://www.linux.org/" class="skill-box" target="_blank">
-                    <i class="fab fa-linux"></i>
-                    <h3>Linux</h3>
-                    <p>Ubuntu, Amazon Linux - command line operations and system administration</p>
                 </a>
                 <a href="https://aws.amazon.com/architecture/" class="skill-box" target="_blank">
                     <i class="fas fa-project-diagram"></i>
@@ -154,6 +159,24 @@
                     <h3 class="section-title">Cloud & Infrastructure</h3>
                     
                     <div class="project-card">
+                        <h3>Cloud Resume Challenge</h3>
+                        <p>Built a serverless resume website using AWS services including S3, CloudFront, Lambda, and DynamoDB. Migrated entire infrastructure to Terraform, managing 13+ AWS resources including IAM roles with least-privilege policies. Implemented visitor counter with API Gateway integration and automated CI/CD deployment pipeline with GitHub Actions. Enhanced with automated analytics system: CloudFront access logs analyzed via Athena SQL queries, Lambda function generates daily traffic reports sent via SNS, EventBridge scheduler automates 8am EST delivery.</p>
+                        <div class="tech-stack">
+                            <span><i class="fas fa-code"></i> Terraform</span>
+                            <span><i class="fab fa-github"></i> GitHub Actions</span>
+                            <span><i class="fab fa-aws"></i> S3</span>
+                            <span><i class="fab fa-aws"></i> CloudFront</span>
+                            <span><i class="fab fa-aws"></i> Lambda</span>
+                            <span><i class="fab fa-aws"></i> Athena</span>
+                            <span><i class="fab fa-js-square"></i> JavaScript</span>
+                            <span><i class="fab fa-python"></i> Python</span>
+                        </div>
+                        <a href="https://github.com/JenMagruder/cloud-resume-challenge" target="_blank" class="project-link">
+                            <i class="fab fa-github"></i> View Project
+                        </a>
+                    </div>
+
+                    <div class="project-card">
                         <h3>NBA Statistics Data Lake</h3>
                         <p>Built an automated pipeline using AWS Lambda and EventBridge to collect and process real-time NBA game statistics. Secured the data in S3 with IAM policies using least-privilege access. The system processes 100+ games per season with automated scheduling and data transformation, eliminating manual data collection.</p>
                         <div class="tech-stack">
@@ -170,7 +193,7 @@
 
                     <div class="project-card">
                         <h3>Game Day Notification System</h3>
-                        <p>Created a serverless notification system that delivers real-time NBA game alerts via SMS and email using AWS SNS. Lambda functions trigger automatically via EventBridge to send pre-game and live game notifications for multiple teams with sub-2-second latency. Improved error handling to reduce failed notifications by 95%.</p>
+                        <p>Created a serverless notification system that delivers real-time NBA game alerts via SMS and email using AWS SNS. Lambda functions trigger automatically via EventBridge to send pre-game and live game notifications for multiple teams with sub-2-second latency.</p>
                         <div class="tech-stack">
                             <span><i class="fab fa-aws"></i> AWS Lambda</span>
                             <span><i class="fab fa-aws"></i> SNS</span>
@@ -179,24 +202,6 @@
                             <span><i class="fas fa-server"></i> Serverless</span>
                         </div>
                         <a href="https://github.com/JenMagruder/Devops-Projects" target="_blank" class="project-link">
-                            <i class="fab fa-github"></i> View Project
-                        </a>
-                    </div>
-
-                    <div class="project-card">
-                        <h3>Cloud Resume Challenge</h3>
-                        <p>Built a serverless resume website using AWS services including S3, CloudFront, Lambda, and DynamoDB. Migrated entire infrastructure to Terraform, managing 13+ AWS resources including IAM roles with least-privilege policies. Implemented visitor counter with API Gateway integration and automated CI/CD deployment pipeline with GitHub Actions. Enhanced with automated analytics system: CloudFront access logs analyzed via Athena SQL queries, Lambda function generates daily traffic reports sent via SNS, EventBridge scheduler automates 8am EST delivery.</p>
-                        <div class="tech-stack">
-                            <span><i class="fas fa-code"></i> Terraform</span>
-                            <span><i class="fab fa-aws"></i> S3</span>
-                            <span><i class="fab fa-aws"></i> CloudFront</span>
-                            <span><i class="fab fa-aws"></i> Lambda</span>
-                            <span><i class="fab fa-aws"></i> Athena</span>
-                            <span><i class="fab fa-js-square"></i> JavaScript</span>
-                            <span><i class="fab fa-python"></i> Python</span>
-                            <span><i class="fas fa-code-branch"></i> CI/CD</span>
-                        </div>
-                        <a href="https://github.com/JenMagruder/cloud-resume-challenge" target="_blank" class="project-link">
                             <i class="fab fa-github"></i> View Project
                         </a>
                     </div>
