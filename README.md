@@ -1,9 +1,10 @@
 # Cloud Resume Challenge
 
-A serverless resume website built on AWS with complete Infrastructure as Code using Terraform, featuring a real-time visitor counter, automated CI/CD pipeline, and analytics system.
+A serverless resume website built on AWS with complete Infrastructure as Code using Terraform, featuring remote state management, OIDC authentication, real-time visitor counter, automated CI/CD pipeline, and analytics system.
 
 🌐 **Live Website:** [stratajen.net](https://stratajen.net)  
-⚙️ **Infrastructure:** 100% managed with Terraform
+⚙️ **Infrastructure:** 100% managed with Terraform  
+🔐 **Security:** OIDC authentication for GitHub Actions (no stored credentials)
 
 ---
 
@@ -11,8 +12,8 @@ A serverless resume website built on AWS with complete Infrastructure as Code us
 
 - [Project Overview](#-project-overview)
 - [Architecture](#-architecture)
-- [Infrastructure as Code (Terraform)](#-infrastructure-as-code-terraform)
-- [Technologies Used](#-technologies-used)
+- [Infrastructure as Code (Terraform)](#️-infrastructure-as-code-terraform)
+- [Technologies Used](#️-technologies-used)
 - [Project Structure](#-project-structure)
 - [Deployment Guide](#-deployment-guide)
 - [Troubleshooting](#-troubleshooting)
@@ -25,6 +26,10 @@ A serverless resume website built on AWS with complete Infrastructure as Code us
 ## 📋 Project Overview
 
 This project is my implementation of the [Cloud Resume Challenge](https://cloudresumechallenge.dev/), demonstrating hands-on experience with AWS services, Infrastructure as Code with Terraform, and DevOps practices.
+
+**Built for:** [Andrew Brown's ExamPro Terraform Cohort](https://www.exampro.co/) (December 2024)
+
+**Infrastructure migration:** Console-built resources imported into Terraform with zero downtime, then enhanced with remote state management and OIDC authentication for secure CI/CD automation.
 
 ---
 
@@ -54,16 +59,57 @@ This project is my implementation of the [Cloud Resume Challenge](https://cloudr
 
 ### CI/CD Pipeline
 - **GitHub Actions** - Automated deployment workflow
+- **OIDC Authentication** - Temporary credentials (no stored keys)
 - **AWS CLI** - S3 sync and CloudFront invalidation
-- **GitHub Secrets** - Secure credential management
+- **Terraform** - Infrastructure deployment automation
 
 ---
 
 ## ⚙️ Infrastructure as Code (Terraform)
 
-All infrastructure is managed with Terraform v1.13.5.
+All infrastructure is managed with Terraform v1.13.5, including remote state storage and OIDC authentication for GitHub Actions.
+
+**📚 For comprehensive Terraform documentation, see [terraform/README.md](terraform/README.md)**
+
+### Remote State Management
+
+**S3 Backend:**
+- State stored in `stratajen-terraform-state` bucket
+- Encrypted with AES-256
+- Versioning enabled for rollback capability
+- Accessible by both local development and GitHub Actions
+
+**DynamoDB State Locking:**
+- Table: `terraform-state-lock`
+- Prevents concurrent Terraform runs from corrupting state
+- Pay-per-request billing (~$0.00/month)
+
+### OIDC Authentication
+
+**Secure GitHub Actions deployment:**
+- No AWS access keys stored in GitHub Secrets
+- Temporary credentials issued per workflow run (1-hour expiration)
+- Least-privilege IAM role scoped to project resources only
+- Repository-restricted authentication
+
+**Components:**
+- IAM OIDC identity provider (trusts GitHub)
+- IAM role with assume role policy
+- Scoped permissions (S3, Lambda, DynamoDB, CloudFront, Route53, API Gateway)
 
 ### Terraform Resources
+
+#### **Remote State Infrastructure**
+- `aws_s3_bucket.terraform_state` - Remote state storage
+- `aws_s3_bucket_versioning.terraform_state` - State versioning
+- `aws_s3_bucket_server_side_encryption_configuration.terraform_state` - AES-256 encryption
+- `aws_s3_bucket_public_access_block.terraform_state` - Block all public access
+- `aws_dynamodb_table.terraform_locks` - State locking table
+
+#### **OIDC Authentication**
+- `aws_iam_openid_connect_provider.github_actions` - GitHub OIDC provider
+- `aws_iam_role.github_actions` - GitHub Actions role
+- `aws_iam_role_policy.github_actions_terraform` - Least-privilege permissions
 
 #### **Storage & Content Delivery**
 - `aws_s3_bucket.website` - Static website bucket
@@ -96,7 +142,11 @@ All infrastructure is managed with Terraform v1.13.5.
 ### Project Structure
 ```
 terraform/
-├── main.tf                  # Provider configuration
+├── README.md                # Detailed Terraform documentation
+├── backend.tf               # S3 backend configuration
+├── remote-state-setup.tf    # S3 bucket + DynamoDB for state
+├── oidc.tf                  # OIDC provider + IAM role
+├── provider.tf              # AWS provider configuration
 ├── variables.tf             # Variable definitions
 ├── terraform.tfvars         # Variable values (gitignored)
 ├── s3.tf                    # S3 resources
@@ -105,7 +155,7 @@ terraform/
 ├── apigateway.tf            # API Gateway resources
 ├── cloudfront.tf            # CloudFront distribution
 ├── route53.tf               # DNS records
-└── .gitignore               # Protects state files
+└── .terraform.lock.hcl      # Provider version lock file
 ```
 
 ### Security Practices
@@ -113,11 +163,13 @@ terraform/
 **Secrets Protection:**
 - Sensitive values in `terraform.tfvars` (gitignored)
 - No hardcoded credentials or account IDs
-- State file protected with `.gitignore`
+- State file stored remotely in encrypted S3 bucket
+- OIDC replaces long-lived access keys
 
 **Least-Privilege IAM:**
 - Lambda has ONLY UpdateItem + GetItem permissions
 - Specific DynamoDB table access only
+- GitHub Actions role scoped to project resources only
 - Removed `AmazonDynamoDBFullAccess` managed policy
 
 **Resource Tagging:**
@@ -138,18 +190,21 @@ terraform/
 
 **Infrastructure as Code:**
 - Terraform v1.13.5
-- AWS Provider
+- AWS Provider v5.100.0
+- S3 remote backend
+- DynamoDB state locking
 
 **AWS Services:**
 - S3, CloudFront, Route 53, ACM
 - Lambda, API Gateway, DynamoDB
 - Athena, SNS, EventBridge
-- IAM
+- IAM (including OIDC identity provider)
 
 **DevOps:**
-- GitHub Actions
+- GitHub Actions with OIDC authentication
 - Git version control
 - AWS CLI
+- CI/CD automation
 
 ---
 
@@ -162,11 +217,15 @@ cloud-resume-challenge/
 │   └── script.js               # Visitor counter
 ├── backend/
 │   ├── lambda_function.py      # Visitor counter Lambda
-│   └── lambda_function.zip     # Deployment package (gitignored)
+│   └── lambda_function.zip     # Deployment package
 ├── analytics/
 │   └── analytics_lambda.py     # Analytics Lambda
 ├── terraform/
-│   ├── main.tf                 # Provider config
+│   ├── README.md               # Detailed Terraform docs
+│   ├── backend.tf              # S3 backend config
+│   ├── remote-state-setup.tf   # Remote state infrastructure
+│   ├── oidc.tf                 # OIDC authentication
+│   ├── provider.tf             # Provider config
 │   ├── variables.tf            # Variables
 │   ├── terraform.tfvars        # Values (gitignored)
 │   ├── s3.tf                   # S3 resources
@@ -174,13 +233,12 @@ cloud-resume-challenge/
 │   ├── lambda.tf               # Lambda + IAM
 │   ├── apigateway.tf           # API Gateway
 │   ├── cloudfront.tf           # CloudFront
-│   ├── route53.tf              # DNS
-│   └── .gitignore              # State protection
+│   └── route53.tf              # DNS
 ├── images/
 │   └── Cloud-Resume-Architecture.png  # Architecture diagram
 ├── .github/
 │   └── workflows/
-│       └── deploy.yml          # CI/CD pipeline
+│       └── deploy.yml          # CI/CD pipeline (OIDC)
 └── README.md
 ```
 
@@ -217,19 +275,13 @@ terraform plan
 terraform apply
 ```
 
-#### 4. Upload Frontend
-```bash
-cd ../frontend
-aws s3 sync . s3://your-bucket-name/
-aws cloudfront create-invalidation --distribution-id YOUR_ID --paths "/*"
-```
+#### 4. Configure GitHub Actions OIDC
+The IAM OIDC provider and role are created by Terraform. Update your GitHub Actions workflow to use OIDC authentication instead of access keys.
 
-#### 5. Configure CI/CD
-Add GitHub Secrets:
-- `AWS_ACCESS_KEY_ID`
-- `AWS_SECRET_ACCESS_KEY`
-- `S3_BUCKET`
-- `CLOUDFRONT_DISTRIBUTION_ID`
+See [terraform/README.md](terraform/README.md) for detailed OIDC setup instructions.
+
+#### 5. Set Up CI/CD
+GitHub Actions will automatically deploy changes on push to main branch using OIDC authentication.
 
 ---
 
@@ -254,6 +306,8 @@ aws s3api put-public-access-block \
   --public-access-block-configuration \
   "BlockPublicAcls=true,IgnorePublicAcls=false,BlockPublicPolicy=true,RestrictPublicBuckets=true"
 ```
+
+Then configured bucket ownership controls in Terraform.
 
 ---
 
@@ -310,21 +364,27 @@ resource "aws_s3_bucket_ownership_controls" "cloudfront_logs" {
 
 ## 📈 Key Learnings
 
-- **Infrastructure as Code**: Migrated existing AWS resources to Terraform
-- **Import Strategies**: Imported 13 AWS resources into Terraform state
-- **Serverless Architecture**: Built with Lambda and API Gateway
-- **Security**: Applied least-privilege IAM policies
-- **Troubleshooting**: Debugged ACL configuration and import issues
-- **DevOps**: Automated deployment with GitHub Actions
+- **Infrastructure as Code**: Migrated console-built AWS resources to Terraform with zero downtime
+- **Remote State Management**: Implemented S3 backend with DynamoDB locking for team collaboration
+- **OIDC Authentication**: Eliminated stored AWS credentials with temporary token-based authentication
+- **Import Strategies**: Successfully imported existing AWS resources into Terraform state
+- **Serverless Architecture**: Built scalable backend with Lambda and API Gateway
+- **Security Best Practices**: Applied least-privilege IAM policies throughout infrastructure
+- **CI/CD Automation**: Automated deployments with GitHub Actions and OIDC
+- **Troubleshooting**: Debugged CloudFront ACL configuration and IAM role import issues
+- **Community Learning**: Leveraged ExamPro Discord community for remote state and OIDC implementation guidance
 
 ---
 
 ## 🔮 Future Enhancements
 
+- [ ] Terraform modules for reusable infrastructure components
+- [ ] Multi-environment setup (dev/staging/prod) with Terraform workspaces
 - [ ] AWS Secrets Manager integration for analytics Lambda
 - [ ] Lambda unit tests with pytest
 - [ ] Blog section on website
 - [ ] Enhanced CloudWatch monitoring dashboards
+- [ ] Terraform state backend encryption with customer-managed KMS keys
 
 ---
 
@@ -342,7 +402,8 @@ resource "aws_s3_bucket_ownership_controls" "cloudfront_logs" {
 ## 🙏 Acknowledgments
 
 - [Forrest Brazeal](https://forrestbrazeal.com/) for creating the Cloud Resume Challenge
-- [Andrew Brown](https://www.exampro.co/) for ExamPro Terraform cohort guidance
+- [Andrew Brown](https://www.exampro.co/) for ExamPro Terraform cohort guidance and community support
+- ExamPro Discord community for remote state and OIDC implementation tips
 - AWS documentation and community
 
 ---
