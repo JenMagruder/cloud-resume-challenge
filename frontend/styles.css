@@ -535,7 +535,7 @@ footer {
     margin-bottom: 0;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .hero h1 {
         font-size: 2.5rem;
     }
@@ -553,8 +553,23 @@ footer {
         padding: 2rem 0;
     }
 
+    /* FIX: Move bubble menu to bottom on mobile/tablet */
     .bubble-menu {
-        left: 1rem;
+        left: 0;
+        right: 0;
+        top: auto;
+        bottom: 0;
+        transform: none;
+        background: rgba(26, 32, 44, 0.95);
+        padding: 0.5rem 0;
+        backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(129, 216, 208, 0.2);
+    }
+    
+    .bubble-menu ul {
+        flex-direction: row;
+        justify-content: center;
+        gap: 0.5rem;
     }
     
     .bubble-link {
@@ -576,5 +591,16 @@ footer {
 
     .section-title {
         font-size: 1.3rem;
+    }
+    
+    /* Add padding to bottom of page so content isn't hidden */
+    body {
+        padding-bottom: 4rem;
+    }
+    
+    /* Remove extra left padding since menu is now at bottom */
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
 }
