@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jen Magruder - Cloud Engineer</title>
+    <title>Jen Magruder - Cloud/DevOps Engineer</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -76,8 +76,8 @@
         <section id="about" class="section">
             <h2>Who Am I?</h2>
             <div class="about-content">
-                <p class="intro">Cloud Engineer with hands-on experience building AWS serverless applications, event-driven architectures, and data pipelines.</p>
-                <p>I specialize in Python automation and AWS services like Lambda, S3, SNS, EventBridge, and IAM. I focus on building scalable, cost-effective cloud solutions. Currently completing my AWS Solutions Architect certification with a strong background in serverless architecture, machine learning, and full-stack development.</p>
+                <p class="intro">Cloud/DevOps Engineer with hands-on experience building AWS serverless applications, Infrastructure as Code with Terraform, and automated CI/CD pipelines.</p>
+                <p>I specialize in Python automation, AWS services (Lambda, S3, CloudFront, DynamoDB, API Gateway), and Infrastructure as Code with Terraform. I focus on building scalable, cost-effective cloud solutions with remote state management and OIDC authentication for secure deployments. Currently completing my AWS Solutions Architect certification with a strong background in serverless architecture, DevOps automation, machine learning, and full-stack development.</p>
             </div>
         </section>
 
@@ -160,16 +160,19 @@
                     
                     <div class="project-card">
                         <h3>Cloud Resume Challenge</h3>
-                        <p>Built a serverless resume website using AWS services including S3, CloudFront, Lambda, and DynamoDB. Migrated entire infrastructure to Terraform, managing 13+ AWS resources including IAM roles with least-privilege policies. Implemented visitor counter with API Gateway integration and automated CI/CD deployment pipeline with GitHub Actions. Enhanced with automated analytics system: CloudFront access logs analyzed via Athena SQL queries, Lambda function generates daily traffic reports sent via SNS, EventBridge scheduler automates 8am EST delivery.</p>
+                        <p>Production serverless website built with 100% Terraform-managed infrastructure. Migrated existing Console-built AWS resources into Terraform with zero downtime using import strategies. Implemented S3 remote state backend with DynamoDB locking for concurrent access control. Configured OIDC authentication for GitHub Actions (no stored AWS credentials). Built visitor counter with Lambda, DynamoDB, and API Gateway. Deployed with automated CI/CD pipeline using GitHub Actions with temporary OIDC tokens. Enhanced with automated analytics: CloudFront access logs analyzed via Athena SQL queries, Lambda generates daily traffic reports delivered via SNS on EventBridge schedule.</p>
                         <div class="tech-stack">
                             <span><i class="fas fa-code"></i> Terraform</span>
+                            <span><i class="fas fa-lock"></i> OIDC</span>
                             <span><i class="fab fa-github"></i> GitHub Actions</span>
                             <span><i class="fab fa-aws"></i> S3</span>
                             <span><i class="fab fa-aws"></i> CloudFront</span>
                             <span><i class="fab fa-aws"></i> Lambda</span>
+                            <span><i class="fab fa-aws"></i> DynamoDB</span>
+                            <span><i class="fab fa-aws"></i> API Gateway</span>
                             <span><i class="fab fa-aws"></i> Athena</span>
-                            <span><i class="fab fa-js-square"></i> JavaScript</span>
                             <span><i class="fab fa-python"></i> Python</span>
+                            <span><i class="fab fa-js-square"></i> JavaScript</span>
                         </div>
                         <a href="https://github.com/JenMagruder/cloud-resume-challenge" target="_blank" class="project-link">
                             <i class="fab fa-github"></i> View Project
