@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Migrating to Terraform: Remote State & OIDC | Jen Magruder</title>
+    <meta name="description" content="How I migrated my cloud resume infrastructure to Terraform with zero downtime, implementing remote state and OIDC authentication.">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Blog post specific styles */
+        .blog-post {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        .blog-header {
+            margin-bottom: 3rem;
+        }
+        
+        .blog-title {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        
+        .blog-post-meta {
+            display: flex;
+            gap: 2rem;
+            color: var(--secondary-color);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+        
+        .blog-post-meta i {
+            color: #81D8D0;
+            margin-right: 0.5rem;
+        }
+        
+        .blog-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-color);
+        }
+        
+        .blog-content h2 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        
+        .blog-content h3 {
+            font-size: 1.4rem;
+            color: var(--secondary-color);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .blog-content p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .blog-content ul, .blog-content ol {
+            margin-bottom: 1.5rem;
+            padding-left: 2rem;
+        }
+        
+        .blog-content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .blog-content code {
+            background: var(--background-color);
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #81D8D0;
+        }
+        
+        .blog-content pre {
+            background: var(--primary-color);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+        }
+        
+        .blog-content pre code {
+            background: none;
+            color: white;
+            padding: 0;
+        }
+        
+        .blog-content strong {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .blog-content em {
+            color: #81D8D0;
+            font-style: italic;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #81D8D0;
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .back-link:hover {
+            gap: 0.75rem;
+        }
+        
+        .back-link i {
+            transition: transform 0.3s ease;
+        }
+        
+        .back-link:hover i {
+            transform: translateX(-3px);
+        }
+        
+        @media (max-width: 768px) {
+            .blog-post {
+                padding: 2rem 1rem;
+            }
+            
+            .blog-title {
+                font-size: 2rem;
+            }
+            
+            .blog-content {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <article class="blog-post">
+        <a href="../index.html#blog" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Portfolio
+        </a>
+        
+        <header class="blog-header">
+            <h1 class="blog-title">Migrating My Cloud Resume to Terraform: Remote State, OIDC, and Real-World Constraints</h1>
+            <div class="blog-post-meta">
+                <span><i class="far fa-calendar"></i>December 2025</span>
+                <span><i class="far fa-clock"></i>12 min read</span>
+                <span><i class="fas fa-tag"></i>Infrastructure as Code</span>
+            </div>
+        </header>
+        
+        <div class="blog-content">
+            <p>When I joined the Cloud Resume Challenge cohort in December 2025, the requirement was to build the Cloud Resume Challenge using CLI instead of clicking through the AWS Console. I had already completed the challenge earlier - but I'd built everything manually through the Console. My infrastructure was live, working, and actively used in job applications. I commented on Andrew Brown's LinkedIn post asking if I could migrate my existing infrastructure to Terraform (which is CLI-based Infrastructure as Code). He agreed.</p>
+            
+            <p>But there was one problem: I couldn't just tear it all down and start over.</p>
+            
+            <p>Here's what I learned migrating production infrastructure to Terraform while keeping everything running.</p>
+            
+            <h2>The Starting Point</h2>
+            
+            <p>My cloud resume challenge was already complete and deployed:</p>
+            <ul>
+                <li>Static website hosted on S3 with CloudFront CDN</li>
+                <li>Custom domain configured with Route53</li>
+                <li>Lambda function tracking visitor counts</li>
+                <li>DynamoDB storing the counter</li>
+                <li>API Gateway connecting the frontend to the backend</li>
+                <li>GitHub Actions automating frontend deployments</li>
+            </ul>
+            
+            <p>Everything was built manually in the AWS Console. It worked great. Recruiters were visiting it (my visitor counter was climbing past 300!), it was linked in my LinkedIn posts, and it was front and center in my job applications.</p>
+            
+            <h2>Why I Had to Import (Not Destroy and Recreate)</h2>
+            
+            <p>Here's the constraint that shaped my entire approach: <strong>I was actively job searching.</strong></p>
+            
+            <p>My cloud resume website wasn't a side project I could casually rebuild. It was:</p>
+            <ul>
+                <li>Live and linked in active job applications</li>
+                <li>Posted across my LinkedIn profile</li>
+                <li>Generating real traffic from recruiters</li>
+                <li>Showing engagement through my visitor counter</li>
+            </ul>
+            
+            <p>Tearing everything down and recreating it would mean:</p>
+            <ul>
+                <li>Broken links in all my LinkedIn posts</li>
+                <li>Dead portfolio link in applications already submitted</li>
+                <li>Lost visitor count data (proof of engagement)</li>
+                <li>Potential downtime during reconstruction</li>
+            </ul>
+            
+            <p>So the decision was made: <strong>import existing resources into Terraform</strong>, don't destroy and recreate. Zero downtime migration.</p>
+            
+            <h2>The Import Process (and Three Issues I Had to Debug)</h2>
+            
+            <p>Importing existing AWS resources into Terraform sounds straightforward. You write the Terraform configuration to match your existing infrastructure, then run <code>terraform import</code> to bring the actual resource into state management.</p>
+            
+            <p>Reality was messier.</p>
+            
+            <h3>Problem #1: CloudFront Logging ACL Configuration</h3>
+            
+            <p>My first attempt to apply the Terraform config:</p>
+            
+            <pre><code>Error: Error putting S3 bucket ACL: InvalidArgument: S3 bucket does not enable ACL access
+  status code: 400</code></pre>
+            
+            <p>CloudFront logging was the culprit. CloudFront needs ACL permissions to write logs to my S3 bucket, but my security settings had <code>IgnorePublicAcls = true</code> (which is generally good practice). These two requirements were fighting each other.</p>
+            
+            <p>The fix required a two-step configuration. Then I configured bucket ownership controls in Terraform.</p>
+            
+            <p><strong>What I figured out:</strong> AWS security defaults sometimes conflict with service requirements. CloudFront logging needed ACL permissions, but my security settings had them blocked.</p>
+            
+            <h3>Problem #2: IAM Role Import Path Confusion</h3>
+            
+            <p>Importing my Lambda execution role seemed simple, but I hit an error. The issue? IAM role ARNs include a path (<code>/service-role/</code>), but the <code>terraform import</code> command expects only the role name, not the full path.</p>
+            
+            <p><strong>What I figured out:</strong> ARN paths and resource names are separate. The import command needs just the name, but the Terraform config has to include the path to match the existing resource.</p>
+            
+            <h3>Problem #3: S3 ACL Not Supported</h3>
+            
+            <p>After fixing the CloudFront logs bucket, I tried to set the ACL in Terraform and got another error. Modern S3 buckets disable ACLs by default. To enable them, you must first configure bucket ownership controls, then set the ACL with an explicit dependency.</p>
+            
+            <p><strong>What I figured out:</strong> S3 ACL configuration requires specific ordering. I had to use <code>depends_on</code> to make sure ownership controls were applied before setting ACLs.</p>
+            
+            <h2>Remote State: Leveling Up Security</h2>
+            
+            <p>At this point, I had everything working with local Terraform state. The migration was complete. I could run <code>terraform plan</code> and <code>terraform apply</code> from my laptop, and everything worked perfectly.</p>
+            
+            <p>Then someone in the Cloud Resume Challenge Discord mentioned OIDC authentication and remote state management. I started reading about it and realized: keeping my state file local wasn't ideal for security or collaboration.</p>
+            
+            <p>Plus, my PC had broken twice this year. I'd just gotten it back from being fixed recently, and it's already broken again. I'm using my laptop instead now, but still - the thought of my Terraform state file only existing on one machine that could break at any time? Not great. Moving it to S3 meant I wouldn't lose all my work if my hardware gave up on me.</p>
+            
+            <p>Remote state made sense for a few reasons. My state file would be encrypted in S3 instead of sitting on a single machine. I could work from anywhere. And if I ever wanted to automate deployments or collaborate with someone, the infrastructure was already set up for it.</p>
+            
+            <p>So I decided to migrate from local state to S3 remote state.</p>
+            
+            <h3>Setting Up Remote State</h3>
+            
+            <p>To use S3 for state storage, I needed an S3 bucket. But I was using Terraform to create S3 buckets. So... how do I create the bucket that stores the state for creating buckets?</p>
+            
+            <p><strong>Solution:</strong> Two-step process. First, create the remote state infrastructure (S3 bucket and DynamoDB table) using local state. Then migrate local state to S3.</p>
+            
+            <h3>DynamoDB State Locking</h3>
+            
+            <p>S3 stores the state, but what prevents two people (or two automation runs) from modifying infrastructure simultaneously?</p>
+            
+            <p><strong>DynamoDB state locking.</strong></p>
+            
+            <p>When Terraform runs, it acquires a lock in DynamoDB. If another process tries to run Terraform, it sees the lock and waits. This prevents state corruption from concurrent operations.</p>
+            
+            <p>Cost? Essentially free. DynamoDB's pay-per-request billing charges about $0.000001 per operation. For ~10 Terraform runs per month, that's functionally zero.</p>
+            
+            <h2>OIDC: Upgrading GitHub Actions Security</h2>
+            
+            <p>My GitHub Actions workflow was already using AWS access keys stored in GitHub Secrets. It worked fine. But the same Discord conversation that introduced me to remote state also mentioned <strong>OIDC (OpenID Connect)</strong> as a more secure authentication method.</p>
+            
+            <h3>Why OIDC Made Sense</h3>
+            
+            <p>I was already using AWS access keys stored in GitHub Secrets. They worked, but I learned they're long-lived credentials that just sit there. If GitHub got compromised, those keys would be exposed indefinitely until I manually rotated them.</p>
+            
+            <p>OIDC was different. No stored credentials at all. Instead, GitHub Actions requests temporary credentials for each workflow run, and they expire after an hour. If something went wrong, the credentials would be useless almost immediately.</p>
+            
+            <p>The setup took longer than just using access keys, but it felt worth it for the security improvement.</p>
+            
+            <h3>The Repository Restriction</h3>
+            
+            <p>When I set up the OIDC provider in AWS, I created an IAM role that GitHub Actions could assume. The critical part was restricting it to ONLY my specific repository. Without that restriction, any GitHub repository could potentially authenticate to my AWS account.</p>
+            
+            <p>I also scoped the IAM permissions tightly - the role can only affect resources in my cloud resume project. If my GitHub Actions workflow were somehow compromised, it couldn't touch anything else in my AWS account. Limited blast radius.</p>
+            
+            <h2>What I Learned</h2>
+            
+            <h3>1. Importing Saved My Live Infrastructure</h3>
+            
+            <p>Destroying and recreating would have been cleaner, but my site was live and linked in job applications. Importing existing resources let me migrate to Terraform without any downtime or broken links. Worth the extra complexity.</p>
+            
+            <h3>2. Remote State Made Things More Secure (and Safer)</h3>
+            
+            <p>I could have kept using local state, but my PC had already broken twice this year, got fixed, and is now broken again. I'm using my laptop instead, but I didn't want my state file tied to just one machine that could fail. Moving the state file to S3 meant I wouldn't lose everything if my hardware died. Plus, encryption at rest, state locking, and the ability to work from any machine made it feel like the right foundation even though I'm not automating deployments yet.</p>
+            
+            <h3>3. Discord Was Where I Learned the Important Stuff</h3>
+            
+            <p>Both remote state and OIDC came from Discord conversations. The Cloud Resume Challenge community helped me figure out what actually mattered versus what was just nice-to-have.</p>
+            
+            <h3>4. OIDC Was Worth the Extra Setup Time</h3>
+            
+            <p>Access keys would have been faster to set up, but spending the extra 30 minutes on OIDC meant no long-lived credentials sitting in GitHub Secrets. That security trade-off made sense.</p>
+            
+            <h3>5. Scoping IAM Permissions Was Non-Negotiable</h3>
+            
+            <p>I could have used wildcard permissions and been done faster, but scoping permissions to only my cloud resume resources limited the damage if something went wrong. Security over convenience.</p>
+            
+            <h2>What's Next</h2>
+            
+            <p>With the Terraform migration complete, I can now:</p>
+            <ul>
+                <li>Submit to Andrew Brown for cohort review (deadline: December 31, 2025)</li>
+                <li>Focus on AWS Solutions Architect certification (exam: January 16, 2026)</li>
+                <li>Continue job searching with production-grade infrastructure to showcase</li>
+            </ul>
+            
+            <p>The journey from Console-built infrastructure to Infrastructure as Code wasn't trivial, but it transformed how I think about cloud architecture. Everything is now version-controlled, reviewable, and reproducible.</p>
+            
+            <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border-color);">
+            
+            <p><strong>Want to see the code?</strong> Check out my <a href="https://github.com/JenMagruder/cloud-resume-challenge" target="_blank" style="color: #81D8D0;">GitHub repository</a> for the complete Terraform configuration, including remote state setup and OIDC implementation.</p>
+            
+            <p><strong>Learning Terraform?</strong> <em>Terraform: Up and Running</em> by Yevgeniy Brikman was incredibly helpful for understanding remote state, modules, and best practices. Highly recommend if you're going beyond the basics.</p>
+            
+            <p><strong>Connect with me on <a href="https://www.linkedin.com/in/jennifer-magruder" target="_blank" style="color: #81D8D0;">LinkedIn</a></strong> if you're working on similar cloud projects or have questions about this migration!</p>
+        </div>
+        
+        <a href="../index.html#blog" class="back-link" style="margin-top: 3rem;">
+            <i class="fas fa-arrow-left"></i> Back to Portfolio
+        </a>
+    </article>
+</body>
+</html>

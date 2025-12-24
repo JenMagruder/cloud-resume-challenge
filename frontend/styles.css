@@ -23,7 +23,7 @@ body {
     line-height: 1.6;
     color: var(--text-color);
     background-color: var(--background-color);
-    padding-bottom: 5rem;
+    padding-top: 5rem;
 }
 
 .hero {
@@ -310,17 +310,17 @@ footer {
     color: var(--accent-color);
 }
 
-/* Bubble Menu - Always on bottom */
+/* Bubble Menu - Top centered for desktop */
 .bubble-menu {
     position: fixed;
     left: 0;
     right: 0;
-    bottom: 0;
+    top: 0;
     z-index: 100;
     background: rgba(26, 32, 44, 0.95);
     padding: 0.75rem 0;
     backdrop-filter: blur(10px);
-    border-top: 1px solid rgba(129, 216, 208, 0.2);
+    border-bottom: 1px solid rgba(129, 216, 208, 0.2);
 }
 
 .bubble-menu ul {
@@ -403,7 +403,7 @@ footer {
 
 .tooltip {
     position: absolute;
-    bottom: calc(100% + 0.5rem);
+    top: calc(100% + 0.5rem);
     left: 50%;
     transform: translateX(-50%);
     background: #81D8D0;
@@ -420,12 +420,12 @@ footer {
 .tooltip::before {
     content: '';
     position: absolute;
-    bottom: -0.5rem;
+    top: -0.5rem;
     left: 50%;
     transform: translateX(-50%);
     border-width: 0.5rem;
     border-style: solid;
-    border-color: #81D8D0 transparent transparent transparent;
+    border-color: transparent transparent #81D8D0 transparent;
 }
 
 .bubble-link:hover .tooltip {
@@ -543,6 +543,81 @@ footer {
     margin-bottom: 0;
 }
 
+/* Blog Preview Styles */
+.blog-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.blog-preview-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.blog-preview-card:hover {
+    border-color: #81D8D0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(129, 216, 208, 0.1);
+}
+
+.blog-meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.blog-date {
+    color: var(--secondary-color);
+}
+
+.blog-category {
+    color: #81D8D0;
+    font-weight: 500;
+}
+
+.blog-preview-card h3 {
+    color: var(--primary-color);
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.blog-excerpt {
+    color: var(--secondary-color);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+}
+
+.blog-read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #81D8D0;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.blog-read-more:hover {
+    gap: 0.75rem;
+    color: var(--primary-color);
+}
+
+.blog-read-more i {
+    font-size: 0.9rem;
+    transition: transform 0.3s ease;
+}
+
+.blog-read-more:hover i {
+    transform: translateX(3px);
+}
+
 @media (max-width: 1024px) {
     .hero h1 {
         font-size: 2.5rem;
@@ -561,9 +636,31 @@ footer {
         padding: 2rem 0;
     }
 
-    /* Adjust bubble menu sizing for mobile */
+    /* Move bubble menu to bottom on mobile/tablet */
     .bubble-menu {
+        top: auto;
+        bottom: 0;
+        border-top: 1px solid rgba(129, 216, 208, 0.2);
+        border-bottom: none;
         padding: 0.5rem 0;
+    }
+    
+    /* Update body padding for bottom menu */
+    body {
+        padding-top: 0;
+        padding-bottom: 4rem;
+    }
+    
+    /* Tooltip position for bottom menu */
+    .tooltip {
+        top: auto;
+        bottom: calc(100% + 0.5rem);
+    }
+    
+    .tooltip::before {
+        top: auto;
+        bottom: -0.5rem;
+        border-color: #81D8D0 transparent transparent transparent;
     }
     
     .bubble-menu ul {
