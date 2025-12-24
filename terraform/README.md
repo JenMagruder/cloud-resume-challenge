@@ -67,6 +67,14 @@ terraform import aws_lambda_function.visitor_counter visitor-counter
 # ... etc
 ```
 
+**Successful DynamoDB import:**
+
+![DynamoDB Import Success](screenshots/counterimportedterraform.png)
+
+**Applying Terraform changes after import:**
+
+![Terraform Apply](screenshots/counterapplyterraform.png)
+
 **Why import vs recreate:**
 - ✅ Zero downtime (website stays online)
 - ✅ Preserve data (DynamoDB visitor count)
@@ -347,6 +355,10 @@ terraform plan
 # Output: "No changes. Your infrastructure matches the configuration."
 ```
 
+**Successful Terraform initialization with remote state:**
+
+![Terraform Init](screenshots/terraforminit.png)
+
 ---
 
 ## 🔐 OIDC Authentication for GitHub Actions
@@ -521,6 +533,10 @@ Resource = [
 - ✅ Limited blast radius if workflow compromised
 - ✅ Shows understanding of security best practices
 
+**OIDC IAM policy configuration:**
+
+![OIDC Terraform Apply](screenshots/terraformoidcapply.png)
+
 ---
 
 ### GitHub Actions Workflow Integration
@@ -611,6 +627,10 @@ terraform/
 - **Should be committed** to Git
 - Ensures GitHub Actions uses same provider versions as local development
 
+**Example Terraform code (DynamoDB table):**
+
+![DynamoDB Terraform Code](screenshots/dynamdbterraform.png)
+
 ---
 
 ## ⚙️ My Terraform Workflow
@@ -625,6 +645,12 @@ terraform apply     # Apply changes to AWS
 ```
 
 State is stored remotely in S3 (`stratajen-terraform-state`), accessible from both my local machine and GitHub Actions.
+
+**Version control with Git:**
+
+![Git Commit Example](screenshots/terraformcommits3.png)
+
+All infrastructure changes are tracked in Git, providing full history and the ability to revert if needed.
 
 ---
 
@@ -789,19 +815,13 @@ It CANNOT:
 
 Areas I'm considering for future enhancements:
 
-- **Terraform modules** - Extract reusable components for other projects
-- **Workspaces** - Separate dev/staging/prod environments  
-- **AWS Secrets Manager** - Move sensitive Lambda environment variables out of code
-- **Automated testing** - Explore Terratest for infrastructure validation
-- **Cost estimation** - Integrate Infracost to track infrastructure costs in PRs
-- **Enhanced documentation** - Auto-generate docs with terraform-docs
-- **Pre-commit validation** - Add hooks to validate Terraform before commits
-- **Customer-managed encryption** - Upgrade state bucket to use KMS instead of SSE-S3
+- **AWS Secrets Manager** - Move Lambda email credentials out of environment variables
 
 ---
 
 ## 📚 References
 
+- **Terraform: Up and Running** by Yevgeniy Brikman - Comprehensive guide to Terraform best practices, remote state, and production workflows
 - [Terraform S3 Backend Documentation](https://developer.hashicorp.com/terraform/language/settings/backends/s3)
 - [GitHub Actions OIDC with AWS](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services)
 - [AWS IAM OIDC Identity Providers](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_oidc.html)
