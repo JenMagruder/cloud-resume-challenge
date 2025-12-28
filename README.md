@@ -15,7 +15,6 @@ A serverless resume website built on AWS with complete Infrastructure as Code us
 - [Infrastructure as Code (Terraform)](#️-infrastructure-as-code-terraform)
 - [Technologies Used](#️-technologies-used)
 - [Project Structure](#-project-structure)
-- [Deployment Guide](#-deployment-guide)
 - [Troubleshooting](#-troubleshooting)
 - [Key Learnings](#-key-learnings)
 - [Future Enhancements](#-future-enhancements)
@@ -27,7 +26,7 @@ A serverless resume website built on AWS with complete Infrastructure as Code us
 
 This project is my implementation of the [Cloud Resume Challenge](https://cloudresumechallenge.dev/), demonstrating hands-on experience with AWS services, Infrastructure as Code with Terraform, and DevOps practices.
 
-**Built for:** [Andrew Brown's ExamPro Terraform Cohort](https://www.exampro.co/) (December 2024)
+**Built for:** [Cloud Resume Challenge Cohort](https://cloudresumechallenge.dev/) by Andrew Brown (December 2025)
 
 **Infrastructure migration:** Console-built resources imported into Terraform with zero downtime, then enhanced with remote state management and OIDC authentication for secure CI/CD automation.
 
@@ -35,13 +34,14 @@ This project is my implementation of the [Cloud Resume Challenge](https://cloudr
 
 ## 🏗️ Architecture
 
-![Cloud Resume Architecture](images/Cloud-Resume-Architecture.png)
+![Cloud Resume Architecture](images/cloud-resume-architecture.png)
 
 ### Frontend
 - **S3** - Static website hosting
 - **CloudFront** - CDN with HTTPS
 - **Route 53** - Custom domain management
 - **ACM** - SSL/TLS certificate
+- **Blog** - Technical blog with Terraform migration post
 
 ### Backend (Visitor Counter)
 - **API Gateway (HTTP API)** - RESTful endpoint
@@ -214,7 +214,9 @@ cloud-resume-challenge/
 ├── frontend/
 │   ├── index.html              # Resume website
 │   ├── styles.css              # Styling
-│   └── script.js               # Visitor counter
+│   ├── script.js               # Visitor counter
+│   └── blog/
+│       └── terraform.html      # Terraform migration blog post
 ├── backend/
 │   ├── lambda_function.py      # Visitor counter Lambda
 │   └── lambda_function.zip     # Deployment package
@@ -241,47 +243,6 @@ cloud-resume-challenge/
 │       └── deploy.yml          # CI/CD pipeline (OIDC)
 └── README.md
 ```
-
----
-
-## 🚀 Deployment Guide
-
-### Prerequisites
-- AWS Account
-- Terraform installed (v1.13.5+)
-- AWS CLI configured
-- GitHub Account
-- Custom domain (optional)
-
-### Steps
-
-#### 1. Clone Repository
-```bash
-git clone https://github.com/JenMagruder/cloud-resume-challenge.git
-cd cloud-resume-challenge
-```
-
-#### 2. Configure Terraform
-```bash
-cd terraform
-cp terraform.tfvars.example terraform.tfvars
-# Edit terraform.tfvars with your values
-```
-
-#### 3. Deploy Infrastructure
-```bash
-terraform init
-terraform plan
-terraform apply
-```
-
-#### 4. Configure GitHub Actions OIDC
-The IAM OIDC provider and role are created by Terraform. Update your GitHub Actions workflow to use OIDC authentication instead of access keys.
-
-See [terraform/README.md](terraform/README.md) for detailed OIDC setup instructions.
-
-#### 5. Set Up CI/CD
-GitHub Actions will automatically deploy changes on push to main branch using OIDC authentication.
 
 ---
 
@@ -378,13 +339,7 @@ resource "aws_s3_bucket_ownership_controls" "cloudfront_logs" {
 
 ## 🔮 Future Enhancements
 
-- [ ] Terraform modules for reusable infrastructure components
-- [ ] Multi-environment setup (dev/staging/prod) with Terraform workspaces
-- [ ] AWS Secrets Manager integration for analytics Lambda
-- [ ] Lambda unit tests with pytest
-- [ ] Blog section on website
-- [ ] Enhanced CloudWatch monitoring dashboards
-- [ ] Terraform state backend encryption with customer-managed KMS keys
+- [ ] AWS Secrets Manager integration for analytics Lambda email credentials
 
 ---
 
@@ -402,8 +357,8 @@ resource "aws_s3_bucket_ownership_controls" "cloudfront_logs" {
 ## 🙏 Acknowledgments
 
 - [Forrest Brazeal](https://forrestbrazeal.com/) for creating the Cloud Resume Challenge
-- [Andrew Brown](https://www.exampro.co/) for ExamPro Terraform cohort guidance and community support
-- ExamPro Discord community for remote state and OIDC implementation tips
+- [Andrew Brown](https://www.exampro.co/) for Cloud Resume Challenge cohort guidance and community support
+- Cloud Resume Challenge Discord community for remote state and OIDC implementation tips
 - AWS documentation and community
 
 ---
