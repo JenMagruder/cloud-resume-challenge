@@ -152,7 +152,7 @@
         </a>
         
         <header class="blog-header">
-            <h1 class="blog-title">Migrating My Cloud Resume to Terraform: Remote State, OIDC, and Real-World Constraints</h1>
+            <h1 class="blog-title">Migrating My Cloud Resume to Terraform: Remote State, OIDC, and Real World Constraints</h1>
             <div class="blog-post-meta">
                 <span><i class="far fa-calendar"></i>December 2025</span>
                 <span><i class="far fa-clock"></i>12 min read</span>
@@ -161,7 +161,7 @@
         </header>
         
         <div class="blog-content">
-            <p>When I joined the Cloud Resume Challenge cohort in December 2025, the requirement was to build the Cloud Resume Challenge using CLI instead of clicking through the AWS Console. I had already completed the challenge earlier - but I'd built everything manually through the Console. My infrastructure was live, working, and actively used in job applications. I commented on Andrew Brown's LinkedIn post asking if I could migrate my existing infrastructure to Terraform (which is CLI-based Infrastructure as Code). He agreed.</p>
+            <p>When I joined the Cloud Resume Challenge cohort in December 2025, the requirement was to build the Cloud Resume Challenge using CLI instead of clicking through the AWS Console. I had already completed the challenge earlier, but I'd built everything manually through the Console. My infrastructure was live, working, and actively used in job applications. I commented on Andrew Brown's LinkedIn post asking if I could migrate my existing infrastructure to Terraform (which is CLI-based Infrastructure as Code). He agreed.</p>
             
             <p>But there was one problem: I couldn't just tear it all down and start over.</p>
             
@@ -240,7 +240,7 @@
             
             <p>Then someone in the Cloud Resume Challenge Discord mentioned OIDC authentication and remote state management. I started reading about it and realized: keeping my state file local wasn't ideal for security or collaboration.</p>
             
-            <p>Plus, my PC had broken twice this year. I'd just gotten it back from being fixed recently, and it's already broken again. I'm using my laptop instead now, but still - the thought of my Terraform state file only existing on one machine that could break at any time? Not great. Moving it to S3 meant I wouldn't lose all my work if my hardware gave up on me.</p>
+            <p>Plus, my PC had broken twice this year. I'd just gotten it back from being fixed recently, and it's already broken again. I'm using my laptop instead now, but still, the thought of my Terraform state file only existing on one machine that could break at any time? Not great. Moving it to S3 meant I wouldn't lose all my work if my hardware gave up on me.</p>
             
             <p>Remote state made sense for a few reasons. My state file would be encrypted in S3 instead of sitting on a single machine. I could work from anywhere. And if I ever wanted to automate deployments or collaborate with someone, the infrastructure was already set up for it.</p>
             
@@ -278,7 +278,7 @@
             
             <p>When I set up the OIDC provider in AWS, I created an IAM role that GitHub Actions could assume. The critical part was restricting it to ONLY my specific repository. Without that restriction, any GitHub repository could potentially authenticate to my AWS account.</p>
             
-            <p>I also scoped the IAM permissions tightly - the role can only affect resources in my cloud resume project. If my GitHub Actions workflow were somehow compromised, it couldn't touch anything else in my AWS account. Limited blast radius.</p>
+            <p>I also scoped the IAM permissions tightly. The role can only affect resources in my cloud resume project. If my GitHub Actions workflow were somehow compromised, it couldn't touch anything else in my AWS account. Limited blast radius.</p>
             
             <h2>What I Learned</h2>
             
