@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building a Job Alert System While Unemployed: A Reality Check - Jen Magruder</title>
+    <meta name="description" content="How I built a serverless AWS job searcher to automate job hunting while managing a toddler and counting every dollar.">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Blog post specific styles */
+        .blog-post {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        .blog-header, .blog-post-header {
+            margin-bottom: 3rem;
+        }
+        
+        .blog-title {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        
+        .blog-subtitle {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            margin-bottom: 2rem;
+            font-style: italic;
+            line-height: 1.6;
+        }
+        
+        .blog-post-meta {
+            display: flex;
+            gap: 2rem;
+            color: var(--secondary-color);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+        
+        .blog-post-meta i {
+            color: #81D8D0;
+            margin-right: 0.5rem;
+        }
+        
+        .blog-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-color);
+        }
+        
+        .blog-content h2 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        
+        .blog-content h3 {
+            font-size: 1.4rem;
+            color: var(--secondary-color);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .blog-content p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .blog-content ul, .blog-content ol {
+            margin-bottom: 1.5rem;
+            padding-left: 2rem;
+        }
+        
+        .blog-content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .blog-content code {
+            background: var(--background-color);
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #81D8D0;
+        }
+        
+        .blog-content pre {
+            background: var(--primary-color);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+        }
+        
+        .blog-content pre code {
+            background: none;
+            color: white;
+            padding: 0;
+        }
+        
+        .blog-content strong {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .blog-content em {
+            color: #81D8D0;
+            font-style: italic;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #81D8D0;
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .back-link:hover {
+            gap: 0.75rem;
+        }
+        
+        .back-link i {
+            transition: transform 0.3s ease;
+        }
+        
+        .back-link:hover i {
+            transform: translateX(-3px);
+        }
+        
+        @media (max-width: 768px) {
+            .blog-post {
+                padding: 2rem 1rem;
+            }
+            
+            .blog-title {
+                font-size: 2rem;
+            }
+            
+            .blog-content {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <article class="blog-post">
+        <a href="../index.html#blog" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Portfolio
+        </a>
+        
+        <header class="blog-post-header">
+            <h1 class="blog-title">Building a Job Alert System While Unemployed: A Reality Check</h1>
+            <p class="blog-subtitle">TL;DR (Too Long; Didn't Read): I spent 12 hours building an AWS serverless job searcher because I couldn't afford to spend half my day job hunting while studying for my AWS certification with a toddler who demands my full attention and counting every dollar.</p>
+            <div class="blog-post-meta">
+                <span><i class="far fa-calendar"></i>January 2026</span>
+                <span><i class="far fa-clock"></i>15 min read</span>
+                <span><i class="fas fa-tag"></i>AWS Projects</span>
+            </div>
+        </header>
+        
+        <div class="blog-content">
+            <h2>The Problem</h2>
+            
+            <p>I've been unemployed for 16 months. I have a toddler. My husband works at Starbucks. We're counting every dollar.</p>
+            
+            <p>Every morning, I'd wake up and start searching Indeed, LinkedIn, Dice, scrolling through hundreds of jobs. But here's the thing: with a toddler, you can't just block out "2 hours for job hunting."</p>
+            
+            <p>Jobs post throughout the day. Your kid needs snacks. Wants you to play princesses. Demands your FULL attention during potty training (no diapers, we're doing this). You search for 20 minutes, get interrupted for "Mommy, come HERE right NOW," come back 2 hours later, lose your place, start over.</p>
+            
+            <p>And honestly? I'm blessed to spend this time with my toddler. The toddler bosses me around, and that's fine. But it also means job hunting takes 4 to 5 hours spread across the entire day instead of a focused 2 hour block.</p>
+            
+            <p>Most of those jobs? Required active TS/SCI clearance I don't have. Were in Maryland (60+ mile commute). Paid below what I need (has to cover more than just daycare costs). Were senior roles I'm not qualified for. Were scams or MLM schemes.</p>
+            
+            <p>And even if you save a job search on popular job search engines? It throws in anything with "engineer" at the end. Search for "cloud engineer" and you'll get network engineer, software engineer, sales engineer, mechanical engineer. Search for "cloud support engineer" and it's the same mess. The filters don't actually filter.</p>
+            
+            <p>By the end of the day, I was mentally exhausted. Studying for my AWS Solutions Architect certification? Forget it. I was done.</p>
+            
+            <p>Something had to change.</p>
+            
+            <h2>The Solution (In Theory)</h2>
+            
+            <p>Build an automated job alert system that searches for cloud/DevOps jobs in Virginia, filters out clearance requirements, Maryland locations, and senior roles, emails me relevant jobs at 7 AM daily, and costs $0/month (because we're counting every dollar).</p>
+            
+            <p><strong>Stack:</strong> Lambda (Python), DynamoDB (job tracking), SNS (email alerts), EventBridge (scheduler), CloudFormation (infrastructure as code).</p>
+            
+            <p>Simple, right?</p>
+            
+            <h2>Reality: 12 Hours of "Simple"</h2>
+            
+            <h3>Hour 1 to 2: CloudFormation Setup</h3>
+            
+            <p>I started with the infrastructure. Four CloudFormation stacks: DynamoDB tables (jobs + seen jobs with 90 day TTL), SNS topic for email notifications, Lambda function, EventBridge scheduler.</p>
+            
+            <p>First mistake: Used the wrong email in my SNS stack. Had to delete and redeploy. CloudFormation deletes take 2 to 5 minutes. Cool.</p>
+            
+            <p>Second mistake: SNS topic ARN was wrong in Lambda environment variables. Spent 20 minutes debugging why emails weren't sending, only to realize I'd copied a Lambda runtime ARN instead of the SNS topic ARN.</p>
+            
+            <p>YAY ME. Just keep making mistakes. It's fine. Everything's fine. 🙃</p>
+            
+            <h3>Hour 3 to 4.5: The Indeed RSS Disaster</h3>
+            
+            <p>My original plan: Use Indeed's RSS feeds. They're free, public, and return fresh jobs.</p>
+            
+            <p>Plot twist: Indeed's RSS feeds don't work anymore. Or they do, but not reliably. The URLs are rss.indeed.com (not www.rss.indeed.com), but even then: "This page can't be reached. DNS_PROBE_FINISHED_NXDOMAIN"</p>
+            
+            <p>Tried for over an hour. Nothing. Searched documentation. Tried different parameters. Tried the old www.indeed.com/rss format. Nope.</p>
+            
+            <p>Turns out Indeed is phasing out RSS in favor of requiring paid API access in 2025.</p>
+            
+            <p>Great.</p>
+            
+            <h3>Hour 4.5 to 6: Enter SerpAPI (And More Problems)</h3>
+            
+            <p>SerpAPI scrapes search engines for you. They have a free tier: 100 searches/month.</p>
+            
+            <p>Spent 1.5 hours integrating it, configuring the Lambda function, testing, and getting errors.</p>
+            
+            <p><code>Status Code 400: {'error': 'Unsupported `indeed` search engine.'}</code></p>
+            
+            <p>Wait, what?</p>
+            
+            <p>Checked my SerpAPI account dashboard. Zero searches used. It wasn't even reaching the API.</p>
+            
+            <p>Kept testing. Kept checking. Finally realized: Indeed engine isn't supported on free tier. Requires $50/month.</p>
+            
+            <p>We're counting every dollar. $50/month for job alerts? Absolutely not.</p>
+            
+            <p><strong>Problem 2:</strong> Switched to Google Jobs engine (free tier). Had to completely rewrite the Lambda function to handle Google's job structure instead of Indeed's.</p>
+            
+            <p><strong>Problem 3:</strong> Environment variables. API keys. Making sure I'm not hardcoding secrets. This is VERY important: never put API keys in your code. Using AWS CLI to set Lambda env vars instead.</p>
+            
+            <p>Meanwhile: Toddler wants to play dolls. Right now. With my full attention. Husband is at work. I'm running on fumes.</p>
+            
+            <h3>Hour 6 to 8: DynamoDB Schema Mismatch</h3>
+            
+            <p>Finally got SerpAPI working with Google Jobs. Lambda was fetching jobs!</p>
+            
+            <p><code>Error: Missing the key job_id in the item</code></p>
+            
+            <p>My code was using 'id' but DynamoDB expected 'job_id'. Had to update every reference in the code, repackage the Lambda zip, redeploy.</p>
+            
+            <p>Then the dependencies got wiped out. Had to reinstall feedparser and requests. Repackage. Redeploy.</p>
+            
+            <p>Then it happened again because I kept forgetting to include the dependencies in the zip.</p>
+            
+            <p>Three. Separate. Times.</p>
+            
+            <p>YAY ME AGAIN. 🙃</p>
+            
+            <h3>Hour 8 to 9: Testing and Filtering</h3>
+            
+            <p>First test run: Got 4 job emails.</p>
+            
+            <p><strong>Job 1:</strong> Lead Software Engineer, DevOps. Me: I'm not senior. Rejected.</p>
+            <p><strong>Job 2:</strong> Expert DevOps Engineer. Me: I'm not an expert. Rejected.</p>
+            <p><strong>Job 3:</strong> Senior Principal Cloud Engineer. Me: I'm not principal level. Rejected.</p>
+            <p><strong>Job 4:</strong> DevOps Engineer, Chantilly, VA. Me: Looks perfect!</p>
+            
+            <p>[Clicks link]</p>
+            
+            <p>Job posting: "Clearance: Top Secret/SCI with Polygraph Required"</p>
+            
+            <p>Me: 🙃</p>
+            
+            <h2>The Clearance Problem</h2>
+            
+            <p>Here's the thing: Google Jobs only shows job snippets. The clearance requirements? Those are buried in the full job description on the company's website.</p>
+            
+            <p>My Lambda function can't see them. It can only filter based on what Google returns.</p>
+            
+            <p>So I'll still get false positives.</p>
+            
+            <p>But you know what? It's still better than manually searching Indeed throughout the day while a toddler bosses me around. Now I can check my email at 7 AM, Ctrl+F "clearance" on each job, skip the ones that require active clearance, and apply to the rest.</p>
+            
+            <p>10 minutes instead of half my day.</p>
+            
+            <h3>Hour 9 to 12: Deploy the Scheduler</h3>
+            
+            <p>Final step: Deploy the EventBridge scheduler so it runs daily at 7 AM EST.</p>
+            
+            <pre><code>aws cloudformation create-stack --stack-name job-alerts-scheduler --template-body file://infrastructure/04-scheduler.yaml --region us-east-1</code></pre>
+            
+            <p>Wait for it to complete.</p>
+            
+            <p>Done.</p>
+            
+            <p>IT'S ALIVE.</p>
+            
+            <h2>The Final Stats</h2>
+            
+            <p><strong>What I built:</strong> 4 CloudFormation stacks, 1 Lambda function (Python, ~250 lines), 2 DynamoDB tables, 1 SNS topic, 1 EventBridge scheduler, smart filtering for location, seniority, and clearance keywords.</p>
+            
+            <p><strong>Cost:</strong> $0/month (all free tier)</p>
+            <p><strong>Time invested:</strong> 12 hours (spread across one very long day)</p>
+            <p><strong>Time saved per week:</strong> ~15+ hours</p>
+            <p><strong>ROI:</strong> Break even after 1 week</p>
+            
+            <h2>What I Learned</h2>
+            
+            <p><strong>1. Free tier limitations are real.</strong> SerpAPI's free tier doesn't support Indeed. Had to pivot to Google Jobs.</p>
+            
+            <p><strong>2. DynamoDB schema mismatches will destroy you.</strong> 'id' vs 'job_id' cost me 30 minutes and three redeployments.</p>
+            
+            <p><strong>3. You can't filter what you can't see.</strong> Google Jobs snippets don't include clearance requirements. False positives will happen.</p>
+            
+            <p><strong>4. Environment variables over hardcoding secrets.</strong> Use aws lambda update-function-configuration to set env vars. Never put API keys in code. This is VERY important.</p>
+            
+            <p><strong>5. Dependencies in Lambda packages are easy to forget.</strong> If your zip is 7KB instead of 1.3MB, you forgot to include feedparser and requests. Ask me how I know.</p>
+            
+            <p><strong>6. Testing in production is real.</strong> Sometimes you just have to deploy it and see what breaks. Then fix it. Then redeploy. Three times.</p>
+            
+            <h2>Was It Worth It?</h2>
+            
+            <p>Honestly? Yes.</p>
+            
+            <p>I spent 12 hours building this, but now I can spend mornings studying AWS instead of job hunting. I get fresh jobs delivered to my inbox daily. I don't miss postings because I'm too exhausted to search. My toddler gets more attention during the day. I don't have to context switch between "job hunting mode" and "mom mode" fifty times a day.</p>
+            
+            <p>And most importantly, I proved to myself (and future employers) that I can build production ready AWS infrastructure. I have a portfolio project to talk about in interviews. I actually understand Lambda, DynamoDB, SNS, and EventBridge now, not just theoretically, but from debugging real problems at 6 PM on a Thursday.</p>
+            
+            <h2>The Irony</h2>
+            
+            <p>I built a job searcher to find a cloud engineering job.</p>
+            
+            <p>The job searcher itself is a cloud engineering project.</p>
+            
+            <p>Which means if I don't get hired, at least I got AWS hands on experience out of it.</p>
+            
+            <p>And honestly? That's worth $0/month and 12 hours of my time.</p>
+            
+            <h2>What's Next</h2>
+            
+            <p>Tomorrow morning, I'll wake up to my first automated job alert email. Maybe it'll have 2 jobs. Maybe 10. Maybe they'll all require clearance I don't have.</p>
+            
+            <p>But I won't have spent half my day finding that out.</p>
+            
+            <p>I'll have spent 10 minutes.</p>
+            
+            <p>And the rest? I'll be studying for my AWS Solutions Architect Associate certification, which I'm retaking on January 16th.</p>
+            
+            <p>Because I'm 13 points away from passing.</p>
+            
+            <p>And I don't have time to waste job hunting manually anymore.</p>
+            
+            <h2>Testing Updates</h2>
+            
+            <p><strong>Day 2:</strong> Woke up excited for my first email. Nothing. Checked the logs and found 27 jobs had been processed, but my Python code was rejecting anything with "ability to obtain" clearance, even though those jobs don't require active clearance. Had to update the filter logic, repackage the Lambda zip, and redeploy. Again.</p>
+            
+            <p><strong>Day 3:</strong> Got 3 jobs in my email. Progress! Clicked the first one and got a 404. The job posting had been removed. Expected, but still frustrating. Second job was on ClearanceJobs, which requires creating an account before you can even see the full posting. Pass. Third job? Applied. One actual application out of three results. That's still better than spending hours searching manually.</p>
+            
+            <p>Check back for more updates as I continue testing and refining the filters.</p>
+            
+            <h2>Phase 2: Testing and Building a Real App</h2>
+            
+            <p>Right now, this is running on my laptop. For the next 2 weeks, I'm testing it to see how many jobs come through daily, how accurate the filters are, and what adjustments I need to make.</p>
+            
+            <p>Once I'm confident it works, Phase 2 kicks in: Build a React dashboard to visualize job data, track application status (Applied, Interviewing, Rejected, Offer), add charts and analytics, deploy the frontend (probably Streamlit or React), and push everything to GitHub as a portfolio piece.</p>
+            
+            <p>But first: Let it run. Collect data. Pass my AWS cert on January 16th.</p>
+            
+            <p>Then: Build the app properly and add it to my portfolio.</p>
+            
+            <h2>Tech Stack (For the Nerds)</h2>
+            
+            <p>(And yes, I'm a loud and proud nerd: anime, manga, books, the whole package.)</p>
+            
+            <p><strong>Language:</strong> Python 3.11<br>
+            <strong>Infrastructure:</strong> CloudFormation (IaC)<br>
+            <strong>Compute:</strong> AWS Lambda (serverless)<br>
+            <strong>Storage:</strong> DynamoDB (NoSQL, with TTL for auto cleanup)<br>
+            <strong>Notifications:</strong> SNS (email)<br>
+            <strong>Scheduling:</strong> EventBridge (cron: 7 AM EST daily)<br>
+            <strong>API:</strong> SerpAPI (Google Jobs engine, free tier)<br>
+            <strong>Cost:</strong> $0/month</p>
+            
+            <p><strong>Phase 2 (Coming Soon):</strong> React or Streamlit dashboard, Application tracking, Data visualization</p>
+            
+            <p><strong>GitHub:</strong> Not committed yet—testing locally for 2 weeks first</p>
+            
+            <h2>Final Thoughts</h2>
+            
+            <p>If you're unemployed, job hunting is a full time job. But it doesn't have to be manual labor that eats your entire day between potty training and playtime.</p>
+            
+            <p>Automate what you can. Build tools that solve real problems. Use that time to upskill.</p>
+            
+            <p>And if you're a hiring manager reading this: Hi. I build things that solve real problems. I debug production issues at 6 PM while my toddler demands I play princesses. I don't give up when APIs don't work, I pivot to Google Jobs and make it work anyway.</p>
+            
+            <p>I'm looking for a cloud/DevOps role in Northern Virginia. No active clearance required.</p>
+            
+            <p>Let's talk.</p>
+            
+            <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border-color);">
+            
+            <p><em>Written at 6:30 PM on a Thursday while my toddler watches Bluey and my husband works the closing shift at Starbucks. We're counting every dollar. But we have job alerts at 7 AM tomorrow. That counts for something.</em></p>
+            
+            <p><strong>Want to see my other AWS projects?</strong> Check out my <a href="https://stratajen.net" target="_blank" style="color: #81D8D0;">portfolio</a> or connect with me on <a href="https://www.linkedin.com/in/jennifer-magruder" target="_blank" style="color: #81D8D0;">LinkedIn</a>.</p>
+        </div>
+        
+        <a href="../index.html#blog" class="back-link" style="margin-top: 3rem;">
+            <i class="fas fa-arrow-left"></i> Back to Portfolio
+        </a>
+    </article>
+</body>
+</html>
