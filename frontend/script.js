@@ -1,9 +1,10 @@
 // Typing animation
 const phrases = [
     'Cloud Engineer',
-    'DevOps Enthusiast',
-    'AWS Architect',
-    'Tech Explorer'
+    'DevOps Engineer',
+    'AWS SolutionsArchitect',
+    'Problem Solver',
+    'Serverless Developer',
 ];
 
 let currentPhraseIndex = 0;
