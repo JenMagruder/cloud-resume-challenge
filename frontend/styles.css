@@ -476,8 +476,8 @@ footer {
 }
 
 .cert-badge-img {
-    width: 120px;
-    height: 120px;
+    max-width: 150px;
+    height: auto;
     margin-bottom: 1rem;
     transition: transform 0.3s ease;
 }
