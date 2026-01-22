@@ -2,7 +2,7 @@
 const phrases = [
     'Cloud Engineer',
     'DevOps Engineer',
-    'AWS SolutionsArchitect',
+    'AWS Solutions Architect',
     'Problem Solver',
     'Serverless Developer',
 ];
