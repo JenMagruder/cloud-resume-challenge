@@ -1,327 +1,186 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jen Magruder - Cloud/DevOps Engineer</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body>
-    <nav class="bubble-menu">
-        <ul>
-            <li>
-                <a href="#hero" class="bubble-link active" data-section="hero">
-                    <i class="fas fa-home"></i>
-                    <span class="tooltip">Home</span>
-                </a>
-            </li>
-            <li>
-                <a href="#about" class="bubble-link" data-section="about">
-                    <i class="fas fa-user"></i>
-                    <span class="tooltip">About</span>
-                </a>
-            </li>
-            <li>
-                <a href="#skills" class="bubble-link" data-section="skills">
-                    <i class="fas fa-tools"></i>
-                    <span class="tooltip">Skills</span>
-                </a>
-            </li>
-            <li>
-                <a href="#certifications" class="bubble-link" data-section="certifications">
-                    <i class="fas fa-certificate"></i>
-                    <span class="tooltip">Certifications</span>
-                </a>
-            </li>
-            <li>
-                <a href="#projects" class="bubble-link" data-section="projects">
-                    <i class="fas fa-code"></i>
-                    <span class="tooltip">Projects</span>
-                </a>
-            </li>
-            <li>
-                <a href="#blog" class="bubble-link" data-section="blog">
-                    <i class="fas fa-blog"></i>
-                    <span class="tooltip">Blog</span>
-                </a>
-            </li>
-            <li>
-                <a href="#connect" class="bubble-link" data-section="connect">
-                    <i class="fas fa-envelope"></i>
-                    <span class="tooltip">Connect</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-    <section class="hero" id="hero">
-        <div class="hero-content">
-            <h1>Hi, I'm <span class="highlight">Jen Magruder</span></h1>
-            <p class="subtitle">I'm a</p>
-            <p class="typed-text"></p>
-            <div class="hero-text">
-                <div class="social-links">
-                    <a href="https://github.com/JenMagruder" target="_blank" class="social-link">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="https://www.linkedin.com/in/jennifer-magruder" target="_blank" class="social-link">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                    <a href="https://medium.com/@stratajen" target="_blank" class="social-link">
-                        <i class="fab fa-medium"></i>
-                    </a>
-                    <a href="mailto:strataspherejen@gmail.com" class="social-link">
-                        <i class="fas fa-envelope"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
+# Cloud Resume Challenge
 
-    <main class="container">
-        <section id="about" class="section">
-            <h2>Who Am I?</h2>
-            <div class="about-content">
-                <p class="intro">AWS Certified Solutions Architect and Cloud DevOps Engineer with hands on experience building serverless applications, Infrastructure as Code with Terraform, and automated CI/CD pipelines.</p>
-                <p>I specialize in Python automation, AWS services (Lambda, S3, CloudFront, DynamoDB, API Gateway, SNS, EventBridge), and Infrastructure as Code with Terraform. I focus on building scalable, cost-effective cloud solutions with remote state management and OIDC authentication for secure deployments.</p>
-                <p>Certified AWS Solutions Architect Associate with strong expertise in serverless architecture, DevOps automation, and building tools that solve real problems.</p>
-            </div>
-        </section>
+A serverless resume website built on AWS with Infrastructure as Code using Terraform. Features remote state management, OIDC authentication, real-time visitor counter, automated CI/CD pipeline, and analytics system.
 
-        <section id="skills" class="section">
-            <h2>Technical Skills</h2>
-            <div class="skills-grid">
-                <a href="https://aws.amazon.com/" class="skill-box" target="_blank">
-                    <i class="fab fa-aws"></i>
-                    <h3>AWS</h3>
-                    <p>Lambda, S3, SNS, EventBridge, IAM, CloudWatch - building serverless and event-driven architectures</p>
-                </a>
-                <a href="https://www.python.org/" class="skill-box" target="_blank">
-                    <i class="fab fa-python"></i>
-                    <h3>Python</h3>
-                    <p>Automation, scripting, data processing, and building serverless functions and full-stack applications</p>
-                </a>
-                <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" class="skill-box" target="_blank">
-                    <i class="fab fa-js-square"></i>
-                    <h3>JavaScript</h3>
-                    <p>Frontend development, API integration, and interactive web applications</p>
-                </a>
-                <a href="https://www.terraform.io/" class="skill-box" target="_blank">
-                    <i class="fas fa-code"></i>
-                    <h3>Infrastructure as Code</h3>
-                    <p>Terraform - Managing AWS infrastructure with version control and automation</p>
-                </a>
-                <a href="https://github.com/" class="skill-box" target="_blank">
-                    <i class="fab fa-github"></i>
-                    <h3>Version Control & CI/CD</h3>
-                    <p>Git, GitHub, GitHub Actions - automated deployment pipelines and infrastructure version control</p>
-                </a>
-                <a href="https://www.linux.org/" class="skill-box" target="_blank">
-                    <i class="fab fa-linux"></i>
-                    <h3>Linux & Scripting</h3>
-                    <p>Ubuntu, Amazon Linux - command line operations, Bash scripting, and system administration</p>
-                </a>
-                <a href="https://streamlit.io/" class="skill-box" target="_blank">
-                    <i class="fas fa-stream"></i>
-                    <h3>Development Frameworks</h3>
-                    <p>Streamlit, Flask, FastAPI, and Gradio for building interactive applications</p>
-                </a>
-                <a href="https://pytorch.org/" class="skill-box" target="_blank">
-                    <i class="fas fa-brain"></i>
-                    <h3>Machine Learning</h3>
-                    <p>PyTorch, Neural Networks, Computer Vision, and OCR implementation</p>
-                </a>
-                <a href="https://aws.amazon.com/architecture/" class="skill-box" target="_blank">
-                    <i class="fas fa-project-diagram"></i>
-                    <h3>Architecture & APIs</h3>
-                    <p>Serverless, event-driven architectures, data pipelines, REST APIs, and API integration</p>
-                </a>
-            </div>
-        </section>
+**Live Website:** [stratajen.net](https://stratajen.net)
 
-        <section id="certifications" class="section">
-            <h2>Certifications</h2>
-            <div class="cert-grid">
-                <div class="cert-card">
-                    <div data-iframe-width="150" data-iframe-height="270" data-share-badge-id="aff7ecbe-1dc7-4b89-b5c5-7bc2bc713d86" data-share-badge-host="https://www.credly.com"></div>
-                    <script type="text/javascript" async src="//cdn.credly.com/assets/utilities/embed.js"></script>
-                    <h3>AWS Solutions Architect Associate</h3>
-                    <p>Passed January 2026</p>
-                </div>
-                <div class="cert-card teal-squad">
-                    <img src="https://stratajen.net/certificates/genai-cpb-teal-badge.png" alt="Teal Squad GenAI Certification Badge" class="cert-badge-img">
-                    <h3>Teal Squad GenAI Certification</h3>
-                    <p>Completed April 2025</p>
-                    <a href="https://stratajen.net/certificates/certificate-genai.pdf" target="_blank" class="cert-link">
-                        View Certificate <i class="fas fa-external-link-alt"></i>
-                    </a>
-                </div>
-            </div>
-        </section>
+**Built for:** Cloud Resume Challenge Cohort by Andrew Brown (December 2025)
 
-        <section id="projects" class="section">
-            <h2>Projects</h2>
-            <div class="project-grid">
-                <!-- Cloud/Infrastructure Projects -->
-                <div class="project-section">
-                    <h3 class="section-title">Cloud & Infrastructure</h3>
-                    
-                    <div class="project-card">
-                        <h3>Cloud Resume Challenge</h3>
-                        <p>Production serverless website built with 100% Terraform-managed infrastructure. Migrated existing Console-built AWS resources into Terraform with zero downtime using import strategies. Implemented S3 remote state backend with DynamoDB locking for concurrent access control. Configured OIDC authentication for GitHub Actions (no stored AWS credentials). Built visitor counter with Lambda, DynamoDB, and API Gateway. Deployed with automated CI/CD pipeline using GitHub Actions with temporary OIDC tokens. Enhanced with automated analytics: CloudFront access logs analyzed via Athena SQL queries, Lambda generates daily traffic reports delivered via SNS on EventBridge schedule.</p>
-                        <div class="tech-stack">
-                            <span><i class="fas fa-code"></i> Terraform</span>
-                            <span><i class="fas fa-lock"></i> OIDC</span>
-                            <span><i class="fab fa-github"></i> GitHub Actions</span>
-                            <span><i class="fab fa-aws"></i> S3</span>
-                            <span><i class="fab fa-aws"></i> CloudFront</span>
-                            <span><i class="fab fa-aws"></i> Lambda</span>
-                            <span><i class="fab fa-aws"></i> DynamoDB</span>
-                            <span><i class="fab fa-aws"></i> API Gateway</span>
-                            <span><i class="fab fa-aws"></i> Athena</span>
-                            <span><i class="fab fa-python"></i> Python</span>
-                            <span><i class="fab fa-js-square"></i> JavaScript</span>
-                        </div>
-                        <a href="https://github.com/JenMagruder/cloud-resume-challenge" target="_blank" class="project-link">
-                            <i class="fab fa-github"></i> View Project
-                        </a>
-                    </div>
+---
 
-                    <div class="project-card">
-                        <h3>NBA Statistics Data Lake</h3>
-                        <p>Built an automated pipeline using AWS Lambda and EventBridge to collect and process real-time NBA game statistics. Secured the data in S3 with IAM policies using least-privilege access. The system processes 100+ games per season with automated scheduling and data transformation, eliminating manual data collection.</p>
-                        <div class="tech-stack">
-                            <span><i class="fab fa-aws"></i> AWS Lambda</span>
-                            <span><i class="fab fa-aws"></i> S3</span>
-                            <span><i class="fab fa-aws"></i> EventBridge</span>
-                            <span><i class="fab fa-python"></i> Python</span>
-                            <span><i class="fas fa-plug"></i> REST APIs</span>
-                        </div>
-                        <a href="https://github.com/JenMagruder" target="_blank" class="project-link">
-                            <i class="fab fa-github"></i> View Project
-                        </a>
-                    </div>
+## Project Overview
 
-                    <div class="project-card">
-                        <h3>Game Day Notification System</h3>
-                        <p>Created a serverless notification system that delivers real-time NBA game alerts via SMS and email using AWS SNS. Lambda functions trigger automatically via EventBridge to send pre-game and live game notifications for multiple teams with sub-2-second latency.</p>
-                        <div class="tech-stack">
-                            <span><i class="fab fa-aws"></i> AWS Lambda</span>
-                            <span><i class="fab fa-aws"></i> SNS</span>
-                            <span><i class="fab fa-aws"></i> EventBridge</span>
-                            <span><i class="fab fa-python"></i> Python</span>
-                            <span><i class="fas fa-server"></i> Serverless</span>
-                        </div>
-                        <a href="https://github.com/JenMagruder/Devops-Projects" target="_blank" class="project-link">
-                            <i class="fab fa-github"></i> View Project
-                        </a>
-                    </div>
-                </div>
+This project demonstrates hands-on AWS experience through a production resume website. The infrastructure was originally built via AWS Console, then imported into Terraform with zero downtime to enable Infrastructure as Code management.
 
-                <!-- AI/ML Projects -->
-                <div class="project-section">
-                    <h3 class="section-title">AI & Language Learning</h3>
-                    
-                    <div class="project-card">
-                        <h3>AI-Powered OCR Learning Platform</h3>
-                        <p>Built a Siamese neural network using PyTorch and ResNet34 to recognize Toki Pona pictographic symbols with 85% accuracy. Created an interactive web app with Streamlit that has three learning modes: OCR practice, text adventure, and sentence construction. Trained the model on Google Colab GPU and optimized it to 200ms per prediction. The system supports 11 symbol classes with 512-dimensional embeddings.</p>
-                        <div class="tech-stack">
-                            <span><i class="fab fa-python"></i> Python</span>
-                            <span><i class="fas fa-brain"></i> PyTorch</span>
-                            <span><i class="fas fa-network-wired"></i> ResNet34</span>
-                            <span><i class="fas fa-stream"></i> Streamlit</span>
-                            <span><i class="fas fa-eye"></i> Computer Vision</span>
-                        </div>
-                        <a href="https://github.com/JenMagruder/free-genai-bootcamp-2025/tree/main/toki-pona-ocr" target="_blank" class="project-link">
-                            <i class="fab fa-github"></i> View Project
-                        </a>
-                    </div>
+### What This Project Demonstrates
 
-                    <div class="project-card">
-                        <h3>Japanese Writing Practice Platform</h3>
-                        <p>Built a language learning app with a Flask backend and Streamlit frontend for AI-powered writing practice. Integrated MangaOCR to recognize handwritten text and GPT to generate sentences and provide grading. The app manages practice sessions, tracks progress, and connects the frontend to backend services through RESTful API endpoints.</p>
-                        <div class="tech-stack">
-                            <span><i class="fab fa-python"></i> Python</span>
-                            <span><i class="fas fa-stream"></i> Streamlit</span>
-                            <span><i class="fas fa-flask"></i> Flask</span>
-                            <span><i class="fas fa-robot"></i> GPT</span>
-                            <span><i class="fas fa-plug"></i> REST APIs</span>
-                        </div>
-                        <a href="https://github.com/JenMagruder/free-genai-bootcamp-2025" target="_blank" class="project-link">
-                            <i class="fab fa-github"></i> View Project
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
+- Serverless architecture on AWS
+- Infrastructure as Code with Terraform
+- Zero-downtime migration strategy
+- Secure CI/CD with OIDC authentication
+- Remote state management
+- Production troubleshooting and debugging
 
-        <section id="blog" class="section">
-            <h2>Blog</h2>
-            <div class="blog-preview-grid">
-                <div class="blog-preview-card">
-                    <div class="blog-meta">
-                        <span class="blog-date">December 2025</span>
-                        <span class="blog-category">Infrastructure as Code</span>
-                    </div>
-                    <h3>Migrating My Cloud Resume to Terraform: Remote State, OIDC, and Real-World Constraints</h3>
-                    <p class="blog-excerpt">
-                        The Cloud Resume Challenge cohort requires building via CLI instead of the AWS Console. I had already completed the challenge, but through the Console. My infrastructure was live, generating recruiter traffic, and linked in active job applications. I commented on Andrew Brown's LinkedIn post asking if I could migrate my existing project to Terraform. He agreed. But there was one constraint: I couldn't afford downtime...
-                    </p>
-                    <a href="blog/terraform.html" class="blog-read-more">
-                        Read More <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
+---
 
-                <div class="blog-preview-card">
-                    <div class="blog-meta">
-                        <span class="blog-date">January 2026</span>
-                        <span class="blog-category">Career Journey</span>
-                    </div>
-                    <h3>Building a Cloud Engineering Career While My Toddler Destroyed My Sleep Schedule</h3>
-                    <p class="blog-excerpt">
-                        I never expected TikTok to change my career. I was scrolling one night, somewhere between the third and fourth time my toddler woke up, when I stumbled across someone talking about AWS cloud engineering. Sixteen months unemployed, hundreds of applications, and countless 3 AM study sessions later, here's what I learned about career transitions...
-                    </p>
-                    <a href="blog/journey.html" class="blog-read-more">
-                        Read More <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
+## Architecture
 
-                <div class="blog-preview-card">
-                    <div class="blog-meta">
-                        <span class="blog-date">January 2026</span>
-                        <span class="blog-category">AWS Projects</span>
-                    </div>
-                    <h3>Building a Job Alert System While Unemployed: A Reality Check</h3>
-                    <p class="blog-excerpt">
-                        I spent 12 hours building an AWS serverless job searcher because I couldn't afford to spend half my day job hunting while studying for my AWS certification with a toddler who demands my full attention. Lambda, DynamoDB, SNS, EventBridge, CloudFormation. Cost: $0/month. Time saved: 15+ hours per week...
-                    </p>
-                    <a href="blog/job-searcher.html" class="blog-read-more">
-                        Read More <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-        </section>
+![Cloud Resume Architecture](images/Cloud-Resume-Architecture.png)
 
-        <section id="connect" class="section">
-            <h2>Let's Connect</h2>
-            <div class="social-links">
-                <a href="https://www.linkedin.com/in/jennifer-magruder" target="_blank" class="social-link">
-                    <i class="fab fa-linkedin"></i>
-                </a>
-                <a href="https://github.com/JenMagruder" target="_blank" class="social-link">
-                    <i class="fab fa-github"></i>
-                </a>
-            </div>
-        </section>
+The architecture consists of three main systems:
 
-    </main>
+**Website Delivery:**
+Static files hosted in S3, distributed via CloudFront CDN with custom domain (Route53) and SSL certificate (ACM).
 
-    <footer class="footer">
-        <div class="visitor-counter">
-            <p>You are visitor #<span id="visitor-count">...</span></p>
-        </div>
-    </footer>
+**Visitor Counter:**
+HTTP API (API Gateway) triggering Lambda function to atomically increment visitor count in DynamoDB.
 
-    <script src="script.js"></script>
-</body>
-</html>
+**Analytics:**
+EventBridge scheduler triggers Lambda function daily to query CloudFront logs via Athena, sending email reports via SNS.
+
+**Deployment:**
+GitHub Actions workflow uses OIDC authentication to run Terraform, managing all infrastructure with remote state stored in S3 and DynamoDB state locking.
+
+---
+
+## Infrastructure as Code
+
+All infrastructure is managed with Terraform. See [terraform/README.md](terraform/README.md) for comprehensive documentation including:
+
+- Remote state configuration
+- OIDC authentication setup
+- Resource definitions
+- Deployment procedures
+
+**Key Implementation Details:**
+
+**Remote State Management:**
+State stored in S3 bucket with versioning and encryption. DynamoDB table provides state locking to prevent concurrent modifications.
+
+**OIDC Authentication:**
+GitHub Actions authenticates via OIDC provider instead of long-lived access keys. Temporary credentials issued per workflow run with repository-restricted IAM role.
+
+**Import Strategy:**
+Existing Console-built resources imported into Terraform state to enable IaC management without recreation. Zero downtime maintained throughout migration.
+
+---
+
+## Technologies
+
+**Infrastructure:**
+- Terraform v1.13.5
+- AWS Provider v5.100.0
+- CloudFormation (for analytics Lambda)
+
+**Languages:**
+- Python 3.13 (Lambda functions)
+- HTML/CSS/JavaScript (frontend)
+
+**AWS Services:**
+- Compute: Lambda
+- Storage: S3, DynamoDB
+- Networking: CloudFront, Route 53, API Gateway
+- Security: ACM, IAM
+- Analytics: Athena, SNS, EventBridge
+
+**DevOps:**
+- GitHub Actions
+- OIDC authentication
+- S3 remote backend
+- DynamoDB state locking
+
+---
+
+## Project Structure
+
+```
+cloud-resume-challenge/
+├── frontend/
+│   ├── index.html
+│   ├── styles.css
+│   ├── script.js
+│   └── blog/
+│       ├── terraform.html
+│       ├── journey.html
+│       └── job-searcher.html
+├── backend/
+│   ├── lambda_function.py
+│   └── lambda_function.zip
+├── analytics/
+│   └── analytics_lambda.py
+├── terraform/
+│   └── [See terraform/README.md for structure]
+├── images/
+│   └── Cloud-Resume-Architecture.png
+├── .github/
+│   └── workflows/
+│       └── deploy.yml
+└── README.md
+```
+
+---
+
+## Key Troubleshooting Scenarios
+
+### CloudFront Logging ACL Configuration
+
+**Problem:** CloudFront logging failed due to S3 Public Access Block setting `IgnorePublicAcls = true` preventing ACL configuration.
+
+**Solution:** Updated S3 Public Access Block to `IgnorePublicAcls = false` and configured bucket ownership controls in Terraform to enable CloudFront log delivery.
+
+### IAM Role Import Path Mismatch
+
+**Problem:** Terraform import command failed when attempting to import Lambda execution role using full ARN path.
+
+**Solution:** Used only the role name for import command, then added `path = "/service-role/"` to Terraform resource definition to match existing configuration.
+
+### S3 ACL Not Supported
+
+**Problem:** S3 bucket ACL configuration failed because ACLs were disabled by default on the bucket.
+
+**Solution:** Added `aws_s3_bucket_ownership_controls` resource with explicit dependency ordering using `depends_on` to ensure ownership controls were applied before ACL configuration.
+
+---
+
+## Lessons Learned
+
+**Import Over Recreate:**
+Importing existing resources into Terraform enabled IaC management without service interruption. Critical when infrastructure is already in production use.
+
+**Remote State From Start:**
+While migration to remote state after initial deployment worked, configuring remote state from the beginning would have simplified the process.
+
+**Discord Community Value:**
+Technical implementation details for OIDC and remote state came from community discussions rather than official documentation. Community knowledge filled gaps in standard resources.
+
+**Least-Privilege IAM:**
+Scoping IAM permissions to specific resources rather than using wildcards limited blast radius. Required more initial effort but provided better security posture.
+
+**Testing in Production:**
+Some issues only surfaced after deployment to production environment. Rapid iteration cycle (deploy, test, fix, redeploy) was necessary for resolving integration problems.
+
+---
+
+## Future Enhancements
+
+- AWS Secrets Manager integration for analytics Lambda email credentials
+
+---
+
+## Contact
+
+**Jennifer Magruder**
+
+- Email: [strataspherejen@gmail.com](mailto:strataspherejen@gmail.com)
+- LinkedIn: [jennifer-magruder](https://www.linkedin.com/in/jennifer-magruder)
+- GitHub: [JenMagruder](https://github.com/JenMagruder)
+- Website: [stratajen.net](https://stratajen.net)
+
+---
+
+## Acknowledgments
+
+- [Forrest Brazeal](https://forrestbrazeal.com/) for creating the Cloud Resume Challenge
+- [Andrew Brown](https://www.exampro.co/) for Cloud Resume Challenge cohort guidance and community support
+- Cloud Resume Challenge Discord community for remote state and OIDC implementation tips
+- AWS documentation and community
