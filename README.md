@@ -40,7 +40,7 @@ This project demonstrates hands-on AWS experience through a production resume we
 
 ## Architecture
 
-![Cloud Resume Architecture](images/Cloud-Resume-Architecture.png)
+![Cloud Resume Architecture](images/cloud-resume-architecture.png)
 
 The architecture consists of three main systems:
 
