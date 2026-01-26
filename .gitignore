@@ -1,13 +1,13 @@
-# AWS Credentials - NEVER commit these!
-*.pem
-*.key
-.aws/
-credentials
-config
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+.terraform.lock.hcl
 
-# Environment variables
-.env
-.env.local
+# Lambda deployment packages
+backend/lambda_function.zip
+*.zip
 
 # Python
 __pycache__/
@@ -15,37 +15,24 @@ __pycache__/
 *$py.class
 *.so
 .Python
-venv/
 env/
-*.egg-info/
+venv/
+ENV/
 
-# Node/JavaScript
-node_modules/
-npm-debug.log*
-package-lock.json
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 
-# OS files
+# OS
 .DS_Store
 Thumbs.db
-.idea/
-.vscode/
-*.swp
 
-# Terraform
-*.tfstate
-*.tfstate.*
-*.tfstate.backup
-.terraform/
-*.tfvars
-
-
-# General
+# Logs
 *.log
-*.tmp
-.cache/
-dist/
-build/
 
-# Test coverage
-.coverage
-htmlcov/
+# Lambda deployment packages
+backend/lambda_function.zip
+analytics/*.zip

@@ -4,16 +4,20 @@ import boto3
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('cloud-resume-visitor-counter')
 
+def get_cors_headers():
+    """Return CORS headers for API responses."""
+    return {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS'
+    }
+
 def lambda_handler(event, context):
     # Handle OPTIONS preflight request
     if event.get('requestContext', {}).get('http', {}).get('method') == 'OPTIONS':
         return {
             'statusCode': 200,
-            'headers': {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Headers': 'Content-Type',
-                'Access-Control-Allow-Methods': 'POST, OPTIONS'
-            },
+            'headers': get_cors_headers(),
             'body': ''
         }
     
@@ -30,10 +34,6 @@ def lambda_handler(event, context):
     
     return {
         'statusCode': 200,
-        'headers': {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Headers': 'Content-Type',
-            'Access-Control-Allow-Methods': 'POST, OPTIONS'
-        },
+        'headers': get_cors_headers(),
         'body': json.dumps({'count': count})
     }

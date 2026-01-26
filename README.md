@@ -8,6 +8,21 @@ A serverless resume website built on AWS with Infrastructure as Code using Terra
 
 ---
 
+## Table of Contents
+
+- [Project Overview](#project-overview)
+- [Architecture](#architecture)
+- [Infrastructure as Code](#infrastructure-as-code)
+- [Technologies](#technologies)
+- [Project Structure](#project-structure)
+- [Key Troubleshooting Scenarios](#key-troubleshooting-scenarios)
+- [Lessons Learned](#lessons-learned)
+- [Future Enhancements](#future-enhancements)
+- [Contact](#contact)
+- [Acknowledgments](#acknowledgments)
+
+---
+
 ## Project Overview
 
 This project demonstrates hands-on AWS experience through a production resume website. The infrastructure was originally built via AWS Console, then imported into Terraform with zero downtime to enable Infrastructure as Code management.
@@ -25,7 +40,7 @@ This project demonstrates hands-on AWS experience through a production resume we
 
 ## Architecture
 
-![Cloud Resume Architecture](images/cloud-resume-architecture.png)
+![Cloud Resume Architecture](images/Cloud-Resume-Architecture.png)
 
 The architecture consists of three main systems:
 
@@ -144,20 +159,7 @@ cloud-resume-challenge/
 
 ## Lessons Learned
 
-**Import Over Recreate:**
-Importing existing resources into Terraform enabled IaC management without service interruption. Critical when infrastructure is already in production use.
-
-**Remote State From Start:**
-While migration to remote state after initial deployment worked, configuring remote state from the beginning would have simplified the process.
-
-**Discord Community Value:**
-Technical implementation details for OIDC and remote state came from community discussions rather than official documentation. Community knowledge filled gaps in standard resources.
-
-**Least-Privilege IAM:**
-Scoping IAM permissions to specific resources rather than using wildcards limited blast radius. Required more initial effort but provided better security posture.
-
-**Testing in Production:**
-Some issues only surfaced after deployment to production environment. Rapid iteration cycle (deploy, test, fix, redeploy) was necessary for resolving integration problems.
+Importing existing resources into Terraform allowed zero-downtime migration, which was critical since my site was live and linked in active job applications. Most OIDC and remote state implementation details came from Discord community discussions rather than official documentation. IAM permissions took extra time to scope properly, but limiting each role to specific resources reduced security risk.
 
 ---
 
