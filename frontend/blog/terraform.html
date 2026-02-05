@@ -152,174 +152,133 @@
         </a>
         
         <header class="blog-header">
-            <h1 class="blog-title">Migrating My Cloud Resume to Terraform: Remote State, OIDC, and Real World Constraints</h1>
+            <h1 class="blog-title">Migrating My Cloud Resume to Terraform: Remote State, OIDC, and Zero Downtime</h1>
             <div class="blog-post-meta">
                 <span><i class="far fa-calendar"></i>December 2025</span>
-                <span><i class="far fa-clock"></i>12 min read</span>
+                <span><i class="far fa-clock"></i>8 min read</span>
                 <span><i class="fas fa-tag"></i>Infrastructure as Code</span>
             </div>
         </header>
         
         <div class="blog-content">
-            <p>When I joined the Cloud Resume Challenge cohort in December 2025, the requirement was to build the Cloud Resume Challenge using CLI instead of clicking through the AWS Console. I had already completed the challenge earlier, but I'd built everything manually through the Console. My infrastructure was live, working, and actively used in job applications. I commented on Andrew Brown's LinkedIn post asking if I could migrate my existing infrastructure to Terraform (which is CLI-based Infrastructure as Code). He agreed.</p>
+            <p>When I joined the Cloud Resume Challenge cohort in December 2025, the requirement was CLI instead of clicking through the AWS Console. I'd already built my cloud resume manually through the Console. I asked Andrew Brown if I could migrate my existing infrastructure to Terraform instead. He said yes.</p>
             
-            <p>But there was one problem: I couldn't just tear it all down and start over.</p>
+            <p>Problem: I couldn't tear it all down and start over.</p>
             
-            <p>Here's what I learned migrating production infrastructure to Terraform while keeping everything running.</p>
+            <h2>The Constraint</h2>
             
-            <h2>The Starting Point</h2>
+            <p>My cloud resume was live and working. S3 hosting, CloudFront CDN, Lambda visitor counter, DynamoDB, API Gateway, custom domain. Everything built manually in the Console.</p>
             
-            <p>My cloud resume challenge was already complete and deployed:</p>
-            <ul>
-                <li>Static website hosted on S3 with CloudFront CDN</li>
-                <li>Custom domain configured with Route53</li>
-                <li>Lambda function tracking visitor counts</li>
-                <li>DynamoDB storing the counter</li>
-                <li>API Gateway connecting the frontend to the backend</li>
-                <li>GitHub Actions automating frontend deployments</li>
-            </ul>
+            <p>But I was actively job searching. Recruiters were visiting it. My visitor counter was past 300. It was linked in LinkedIn posts and job applications.</p>
             
-            <p>Everything was built manually in the AWS Console. It worked great. Recruiters were visiting it (my visitor counter was climbing past 300!), it was linked in my LinkedIn posts, and it was front and center in my job applications.</p>
+            <p>Tearing it down meant broken links in applications, dead portfolio URLs, lost visitor data, and potential downtime.</p>
             
-            <h2>Why I Had to Import (Not Destroy and Recreate)</h2>
+            <p>So: import existing resources into Terraform. Zero downtime migration.</p>
             
-            <p>Here's the constraint that shaped my entire approach: <strong>I was actively job searching.</strong></p>
+            <h2>The Import Process</h2>
             
-            <p>My cloud resume website wasn't a side project I could casually rebuild. It was:</p>
-            <ul>
-                <li>Live and linked in active job applications</li>
-                <li>Posted across my LinkedIn profile</li>
-                <li>Generating real traffic from recruiters</li>
-                <li>Showing engagement through my visitor counter</li>
-            </ul>
-            
-            <p>Tearing everything down and recreating it would mean:</p>
-            <ul>
-                <li>Broken links in all my LinkedIn posts</li>
-                <li>Dead portfolio link in applications already submitted</li>
-                <li>Lost visitor count data (proof of engagement)</li>
-                <li>Potential downtime during reconstruction</li>
-            </ul>
-            
-            <p>So the decision was made: <strong>import existing resources into Terraform</strong>, don't destroy and recreate. Zero downtime migration.</p>
-            
-            <h2>The Import Process (and Three Issues I Had to Debug)</h2>
-            
-            <p>Importing existing AWS resources into Terraform sounds straightforward. You write the Terraform configuration to match your existing infrastructure, then run <code>terraform import</code> to bring the actual resource into state management.</p>
+            <p>Importing AWS resources into Terraform sounds simple. Write the config to match existing infrastructure, run <code>terraform import</code>, done.</p>
             
             <p>Reality was messier.</p>
             
-            <h3>Problem #1: CloudFront Logging ACL Configuration</h3>
+            <h3>Problem 1: CloudFront Logging ACL</h3>
             
-            <p>My first attempt to apply the Terraform config:</p>
+            <p>First attempt:</p>
             
             <pre><code>Error: Error putting S3 bucket ACL: InvalidArgument: S3 bucket does not enable ACL access
   status code: 400</code></pre>
             
-            <p>CloudFront logging was the culprit. CloudFront needs ACL permissions to write logs to my S3 bucket, but my security settings had <code>IgnorePublicAcls = true</code> (which is generally good practice). These two requirements were fighting each other.</p>
+            <p>CloudFront logging needed ACL permissions to write logs to my S3 bucket. But my security settings had <code>IgnorePublicAcls = true</code>. These two requirements fought each other.</p>
             
-            <p>The fix required a two-step configuration. Then I configured bucket ownership controls in Terraform.</p>
+            <p>Fix: Configure bucket ownership controls in Terraform first, then enable ACLs for CloudFront logging.</p>
             
-            <p><strong>What I figured out:</strong> AWS security defaults sometimes conflict with service requirements. CloudFront logging needed ACL permissions, but my security settings had them blocked.</p>
+            <p>Lesson: AWS security defaults sometimes conflict with service requirements.</p>
             
-            <h3>Problem #2: IAM Role Import Path Confusion</h3>
+            <h3>Problem 2: IAM Role Import Path</h3>
             
-            <p>Importing my Lambda execution role seemed simple, but I hit an error. The issue? IAM role ARNs include a path (<code>/service-role/</code>), but the <code>terraform import</code> command expects only the role name, not the full path.</p>
+            <p>Importing my Lambda execution role failed. IAM role ARNs include a path like <code>/service-role/</code>, but <code>terraform import</code> expects only the role name.</p>
             
-            <p><strong>What I figured out:</strong> ARN paths and resource names are separate. The import command needs just the name, but the Terraform config has to include the path to match the existing resource.</p>
+            <p>Fix: Use just the role name in the import command, but include the full path in the Terraform config to match the existing resource.</p>
             
-            <h3>Problem #3: S3 ACL Not Supported</h3>
+            <p>Lesson: ARN paths and resource names are different things.</p>
             
-            <p>After fixing the CloudFront logs bucket, I tried to set the ACL in Terraform and got another error. Modern S3 buckets disable ACLs by default. To enable them, you must first configure bucket ownership controls, then set the ACL with an explicit dependency.</p>
+            <h3>Problem 3: S3 ACL Ordering</h3>
             
-            <p><strong>What I figured out:</strong> S3 ACL configuration requires specific ordering. I had to use <code>depends_on</code> to make sure ownership controls were applied before setting ACLs.</p>
+            <p>After fixing CloudFront logs, I tried setting the ACL in Terraform and got another error. Modern S3 buckets disable ACLs by default. To enable them, you need bucket ownership controls configured first.</p>
             
-            <h2>Remote State: Leveling Up Security</h2>
+            <p>Fix: Use <code>depends_on</code> to make sure ownership controls apply before setting ACLs.</p>
             
-            <p>At this point, I had everything working with local Terraform state. The migration was complete. I could run <code>terraform plan</code> and <code>terraform apply</code> from my laptop, and everything worked perfectly.</p>
+            <p>Lesson: S3 ACL configuration requires specific ordering.</p>
             
-            <p>Then someone in the Cloud Resume Challenge Discord mentioned OIDC authentication and remote state management. I started reading about it and realized: keeping my state file local wasn't ideal for security or collaboration.</p>
+            <h2>Remote State: Why I Needed It</h2>
             
-            <p>Plus, my PC had broken twice this year. I'd just gotten it back from being fixed recently, and it's already broken again. I'm using my laptop instead now, but still, the thought of my Terraform state file only existing on one machine that could break at any time? Not great. Moving it to S3 meant I wouldn't lose all my work if my hardware gave up on me.</p>
+            <p>At this point, everything worked with local Terraform state. I could run <code>terraform plan</code> and <code>terraform apply</code> from my laptop.</p>
             
-            <p>Remote state made sense for a few reasons. My state file would be encrypted in S3 instead of sitting on a single machine. I could work from anywhere. And if I ever wanted to automate deployments or collaborate with someone, the infrastructure was already set up for it.</p>
+            <p>Then someone in Discord mentioned OIDC and remote state. I started reading and realized: keeping state local wasn't great.</p>
             
-            <p>So I decided to migrate from local state to S3 remote state.</p>
+            <p>My PC had broken twice this year. Just got it back, and it's already broken again. I'm using my laptop now, but the thought of my Terraform state only existing on one machine that could break? Not ideal.</p>
+            
+            <p>Remote state in S3 meant: encrypted storage, work from anywhere, won't lose everything if hardware fails.</p>
             
             <h3>Setting Up Remote State</h3>
             
-            <p>To use S3 for state storage, I needed an S3 bucket. But I was using Terraform to create S3 buckets. So... how do I create the bucket that stores the state for creating buckets?</p>
+            <p>Problem: I needed an S3 bucket to store state. But I was using Terraform to create S3 buckets. How do I create the bucket that stores the state for creating buckets?</p>
             
-            <p><strong>Solution:</strong> Two-step process. First, create the remote state infrastructure (S3 bucket and DynamoDB table) using local state. Then migrate local state to S3.</p>
+            <p>Solution: Two steps. Create remote state infrastructure (S3 bucket and DynamoDB table) using local state. Then migrate local state to S3.</p>
             
             <h3>DynamoDB State Locking</h3>
             
-            <p>S3 stores the state, but what prevents two people (or two automation runs) from modifying infrastructure simultaneously?</p>
+            <p>S3 stores the state, but what prevents two processes from modifying infrastructure simultaneously?</p>
             
-            <p><strong>DynamoDB state locking.</strong></p>
+            <p>DynamoDB state locking. When Terraform runs, it acquires a lock in DynamoDB. If another process tries to run, it sees the lock and waits. Prevents state corruption.</p>
             
-            <p>When Terraform runs, it acquires a lock in DynamoDB. If another process tries to run Terraform, it sees the lock and waits. This prevents state corruption from concurrent operations.</p>
+            <p>Cost: Essentially free. DynamoDB charges about $0.000001 per operation. For 10 Terraform runs per month, that's nothing.</p>
             
-            <p>Cost? Essentially free. DynamoDB's pay-per-request billing charges about $0.000001 per operation. For ~10 Terraform runs per month, that's functionally zero.</p>
+            <h2>OIDC: No More Stored Credentials</h2>
             
-            <h2>OIDC: Upgrading GitHub Actions Security</h2>
+            <p>My GitHub Actions workflow used AWS access keys stored in GitHub Secrets. It worked fine. But the same Discord conversation mentioned OIDC as more secure.</p>
             
-            <p>My GitHub Actions workflow was already using AWS access keys stored in GitHub Secrets. It worked fine. But the same Discord conversation that introduced me to remote state also mentioned <strong>OIDC (OpenID Connect)</strong> as a more secure authentication method.</p>
+            <h3>Why OIDC</h3>
             
-            <h3>Why OIDC Made Sense</h3>
+            <p>Access keys are long lived credentials that sit in GitHub Secrets. If GitHub got compromised, those keys would be exposed until I manually rotated them.</p>
             
-            <p>I was already using AWS access keys stored in GitHub Secrets. They worked, but I learned they're long-lived credentials that just sit there. If GitHub got compromised, those keys would be exposed indefinitely until I manually rotated them.</p>
+            <p>OIDC was different. No stored credentials. GitHub Actions requests temporary credentials for each workflow run. They expire after an hour. If something went wrong, credentials would be useless almost immediately.</p>
             
-            <p>OIDC was different. No stored credentials at all. Instead, GitHub Actions requests temporary credentials for each workflow run, and they expire after an hour. If something went wrong, the credentials would be useless almost immediately.</p>
+            <p>Setup took longer than access keys, but worth it.</p>
             
-            <p>The setup took longer than just using access keys, but it felt worth it for the security improvement.</p>
+            <h3>Repository Restriction</h3>
             
-            <h3>The Repository Restriction</h3>
+            <p>When I set up the OIDC provider in AWS, I created an IAM role that GitHub Actions could assume. Critical part: restrict it to ONLY my specific repository. Without that, any GitHub repository could potentially authenticate to my AWS account.</p>
             
-            <p>When I set up the OIDC provider in AWS, I created an IAM role that GitHub Actions could assume. The critical part was restricting it to ONLY my specific repository. Without that restriction, any GitHub repository could potentially authenticate to my AWS account.</p>
-            
-            <p>I also scoped the IAM permissions tightly. The role can only affect resources in my cloud resume project. If my GitHub Actions workflow were somehow compromised, it couldn't touch anything else in my AWS account. Limited blast radius.</p>
+            <p>I also scoped IAM permissions tightly. The role can only affect resources in my cloud resume project. If GitHub Actions got compromised, it couldn't touch anything else. Limited blast radius.</p>
             
             <h2>What I Learned</h2>
             
-            <h3>1. Importing Saved My Live Infrastructure</h3>
+            <p>Importing saved my live infrastructure. Destroying and recreating would have been cleaner, but my site was live and linked in job applications. Worth the extra complexity.</p>
             
-            <p>Destroying and recreating would have been cleaner, but my site was live and linked in job applications. Importing existing resources let me migrate to Terraform without any downtime or broken links. Worth the extra complexity.</p>
+            <p>Remote state made things safer. My PC broke twice this year. Moving state to S3 meant I wouldn't lose everything if hardware failed. Plus encryption, state locking, and ability to work from any machine.</p>
             
-            <h3>2. Remote State Made Things More Secure (and Safer)</h3>
+            <p>Discord taught me the important stuff. Both remote state and OIDC came from Discord conversations. Community helped me figure out what actually mattered.</p>
             
-            <p>I could have kept using local state, but my PC had already broken twice this year, got fixed, and is now broken again. I'm using my laptop instead, but I didn't want my state file tied to just one machine that could fail. Moving the state file to S3 meant I wouldn't lose everything if my hardware died. Plus, encryption at rest, state locking, and the ability to work from any machine made it feel like the right foundation even though I'm not automating deployments yet.</p>
+            <p>OIDC was worth the setup time. Access keys would have been faster, but no long lived credentials in GitHub Secrets was the right call.</p>
             
-            <h3>3. Discord Was Where I Learned the Important Stuff</h3>
-            
-            <p>Both remote state and OIDC came from Discord conversations. The Cloud Resume Challenge community helped me figure out what actually mattered versus what was just nice-to-have.</p>
-            
-            <h3>4. OIDC Was Worth the Extra Setup Time</h3>
-            
-            <p>Access keys would have been faster to set up, but spending the extra 30 minutes on OIDC meant no long-lived credentials sitting in GitHub Secrets. That security trade-off made sense.</p>
-            
-            <h3>5. Scoping IAM Permissions Was Non-Negotiable</h3>
-            
-            <p>I could have used wildcard permissions and been done faster, but scoping permissions to only my cloud resume resources limited the damage if something went wrong. Security over convenience.</p>
+            <p>Scoping IAM permissions mattered. I could have used wildcard permissions and been done faster, but limiting to only cloud resume resources meant less damage if something went wrong.</p>
             
             <h2>What's Next</h2>
             
-            <p>With the Terraform migration complete, I can now:</p>
-            <ul>
-                <li>Submit to Andrew Brown for cohort review (deadline: December 31, 2025)</li>
-                <li>Focus on AWS Solutions Architect certification (exam: January 16, 2026)</li>
-                <li>Continue job searching with production-grade infrastructure to showcase</li>
-            </ul>
+            <p>With the migration complete, I can showcase production grade infrastructure as code in job applications. Everything is version controlled, reviewable, and reproducible.</p>
             
-            <p>The journey from Console-built infrastructure to Infrastructure as Code wasn't trivial, but it transformed how I think about cloud architecture. Everything is now version-controlled, reviewable, and reproducible.</p>
+            <p>AWS Solutions Architect certification exam: January 16, 2026.</p>
+            
+            <h2>Update</h2>
+            
+            <p>I received Lieutenant Commander grade (really experienced) from the Cloud Resume Challenge cohort review. The migration from Console to Terraform with remote state and OIDC demonstrated production-level infrastructure as code skills.</p>
             
             <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border-color);">
             
-            <p><strong>Want to see the code?</strong> Check out my <a href="https://github.com/JenMagruder/cloud-resume-challenge" target="_blank" style="color: #81D8D0;">GitHub repository</a> for the complete Terraform configuration, including remote state setup and OIDC implementation.</p>
+            <p><strong>Want to see the code?</strong> Check out my <a href="https://github.com/JenMagruder/cloud-resume-challenge" target="_blank" style="color: #81D8D0;">GitHub repository</a> for the complete Terraform configuration.</p>
             
-            <p><strong>Learning Terraform?</strong> <em>Terraform: Up and Running</em> by Yevgeniy Brikman was incredibly helpful for understanding remote state, modules, and best practices. Highly recommend if you're going beyond the basics.</p>
-            
-            <p><strong>Connect with me on <a href="https://www.linkedin.com/in/jennifer-magruder" target="_blank" style="color: #81D8D0;">LinkedIn</a></strong> if you're working on similar cloud projects or have questions about this migration!</p>
+            <p><strong>Connect with me on <a href="https://www.linkedin.com/in/jennifer-magruder" target="_blank" style="color: #81D8D0;">LinkedIn</a></strong> if you're working on similar cloud projects.</p>
         </div>
         
         <a href="../index.html#blog" class="back-link" style="margin-top: 3rem;">
