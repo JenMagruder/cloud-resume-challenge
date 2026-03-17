@@ -85,7 +85,7 @@
         <section id="about" class="section">
             <h2>Who Am I?</h2>
             <div class="about-content">
-                <p class="intro">AWS Certified Solutions Architect and Cloud DevOps Engineer with hands on experience building serverless applications, Infrastructure as Code with Terraform, and automated CI/CD pipelines.</p>
+                <p class="intro">AWS Certified Solutions Architect, AWS Community Builder (Serverless), and Cloud DevOps Engineer with hands on experience building serverless applications, Infrastructure as Code with Terraform, and automated CI/CD pipelines.</p>
                 <p>I specialize in Python automation, AWS services (Lambda, S3, CloudFront, DynamoDB, API Gateway, SNS, EventBridge), and Infrastructure as Code with Terraform. I focus on building scalable, cost-effective cloud solutions with remote state management and OIDC authentication for secure deployments.</p>
                 <p>Certified AWS Solutions Architect Associate with strong expertise in serverless architecture, DevOps automation, and building tools that solve real problems.</p>
             </div>
@@ -168,7 +168,23 @@
                 <!-- Cloud/Infrastructure Projects -->
                 <div class="project-section">
                     <h3 class="section-title">Cloud & Infrastructure</h3>
-                    
+
+                    <div class="project-card">
+                        <h3>Serverless Job Alert System</h3>
+                        <p>Built a serverless job search automation tool to eliminate manual job hunting while studying for AWS certifications. Lambda functions query job listings via SerpAPI and filter results by criteria, storing matches in DynamoDB. EventBridge schedules automated runs and SNS delivers alerts via email. Containerized with Docker for portable local development and testing.</p>
+                        <div class="tech-stack">
+                            <span><i class="fab fa-aws"></i> AWS Lambda</span>
+                            <span><i class="fab fa-aws"></i> DynamoDB</span>
+                            <span><i class="fab fa-aws"></i> SNS</span>
+                            <span><i class="fab fa-aws"></i> EventBridge</span>
+                            <span><i class="fab fa-docker"></i> Docker</span>
+                            <span><i class="fab fa-python"></i> Python</span>
+                        </div>
+                        <a href="https://github.com/JenMagruder/aws-serverless-job-alerts" target="_blank" class="project-link">
+                            <i class="fab fa-github"></i> View Project
+                        </a>
+                    </div>
+
                     <div class="project-card">
                         <h3>Cloud Resume Challenge</h3>
                         <p>Production serverless website built with 100% Terraform-managed infrastructure. Migrated existing Console-built AWS resources into Terraform with zero downtime using import strategies. Implemented S3 remote state backend with DynamoDB locking for concurrent access control. Configured OIDC authentication for GitHub Actions (no stored AWS credentials). Built visitor counter with Lambda, DynamoDB, and API Gateway. Deployed with automated CI/CD pipeline using GitHub Actions with temporary OIDC tokens. Enhanced with automated analytics: CloudFront access logs analyzed via Athena SQL queries, Lambda generates daily traffic reports delivered via SNS on EventBridge schedule.</p>
