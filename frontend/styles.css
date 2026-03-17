@@ -82,6 +82,24 @@ body {
     box-shadow: 0 2px 10px rgba(129, 216, 208, 0.3);
 }
 
+/* ── COMMUNITY BUILDER BADGE ── */
+.cb-badge-container {
+    margin-top: 2rem;
+}
+
+.cb-badge-img {
+    max-width: 480px;
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(129, 216, 208, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cb-badge-img:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(129, 216, 208, 0.35);
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -140,27 +158,27 @@ h2 {
 /* Brand colors for icons */
 .cert-card i.fa-aws,
 .skill-box i.fa-aws {
-    color: #00A1C9;  /* AWS blue */
+    color: #00A1C9;
 }
 
 .skill-box i.fa-python {
-    color: #3776AB;  /* Python blue */
+    color: #3776AB;
 }
 
 .skill-box i.fa-github {
-    color: #181717;  /* GitHub dark */
+    color: #181717;
 }
 
 .skill-box i.fa-docker {
-    color: #2496ED;  /* Docker blue */
+    color: #2496ED;
 }
 
 .skill-box i.fa-linux {
-    color: #FCC624;  /* Linux yellow */
+    color: #FCC624;
 }
 
 .skill-box i.fa-cubes {
-    color: #7B42BC;  /* HashiCorp purple */
+    color: #7B42BC;
 }
 
 .project-card p {
@@ -310,7 +328,7 @@ footer {
     color: var(--accent-color);
 }
 
-/* Bubble Menu - Top centered for desktop */
+/* Bubble Menu */
 .bubble-menu {
     position: fixed;
     left: 0;
@@ -340,19 +358,19 @@ footer {
     width: 3rem;
     height: 3rem;
     border-radius: 50%;
-    background: rgba(40, 44, 52, 0.8);  /* Darker background */
-    color: #81D8D0;  /* Default icon color to teal */
+    background: rgba(40, 44, 52, 0.8);
+    color: #81D8D0;
     text-decoration: none;
     transition: all 0.3s ease;
     position: relative;
-    border: 2px solid #81D8D0;  /* Default border to teal */
-    backdrop-filter: blur(5px);  /* Slight blur effect */
+    border: 2px solid #81D8D0;
+    backdrop-filter: blur(5px);
 }
 
 .bubble-link i {
     font-size: 1.2rem;
     transition: all 0.3s ease;
-    opacity: 0.7;  /* Slightly dim by default */
+    opacity: 0.7;
 }
 
 .bubble-link:hover {
@@ -363,7 +381,7 @@ footer {
 .bubble-link:hover i {
     color: #81D8D0;
     transform: scale(1.1);
-    opacity: 1;  /* Full opacity on hover */
+    opacity: 1;
 }
 
 .bubble-link.active {
@@ -374,16 +392,15 @@ footer {
 
 .bubble-link.active i {
     color: var(--primary-color);
-    opacity: 1;  /* Full opacity when active */
+    opacity: 1;
 }
 
-/* Special color for home section */
 .bubble-link[href="#hero"] {
-    border-color: #B19CD9;  /* Soft purple border for home */
+    border-color: #B19CD9;
 }
 
 .bubble-link[href="#hero"] i {
-    color: #B19CD9;  /* Soft purple icon for home */
+    color: #B19CD9;
 }
 
 .bubble-link[href="#hero"].active {
@@ -636,7 +653,6 @@ footer {
         padding: 2rem 0;
     }
 
-    /* Move bubble menu to bottom on mobile/tablet */
     .bubble-menu {
         top: auto;
         bottom: 0;
@@ -645,13 +661,11 @@ footer {
         padding: 0.5rem 0;
     }
     
-    /* Update body padding for bottom menu */
     body {
         padding-top: 0;
         padding-bottom: 4rem;
     }
     
-    /* Tooltip position for bottom menu */
     .tooltip {
         top: auto;
         bottom: calc(100% + 0.5rem);
@@ -691,5 +705,9 @@ footer {
     .container {
         padding-left: 1rem;
         padding-right: 1rem;
+    }
+
+    .cb-badge-img {
+        max-width: 100%;
     }
 }
