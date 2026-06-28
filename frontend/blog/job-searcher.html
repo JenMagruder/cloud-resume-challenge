@@ -8,113 +8,115 @@
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Blog post specific styles */
         .blog-post {
             max-width: 800px;
             margin: 0 auto;
             padding: 4rem 2rem;
         }
-        
-        .blog-header, .blog-post-header {
+
+        .blog-post-header {
             margin-bottom: 3rem;
         }
-        
+
         .blog-title {
             font-size: 2.5rem;
-            color: var(--primary-color);
+            color: var(--text-bright);
             margin-bottom: 1rem;
             line-height: 1.2;
         }
-        
+
         .blog-subtitle {
             font-size: 1.2rem;
-            color: var(--secondary-color);
+            color: var(--text-dim);
             margin-bottom: 2rem;
             font-style: italic;
             line-height: 1.6;
         }
-        
+
         .blog-post-meta {
             display: flex;
             gap: 2rem;
-            color: var(--secondary-color);
+            color: var(--text-dim);
             font-size: 0.95rem;
             margin-bottom: 2rem;
         }
-        
+
         .blog-post-meta i {
             color: #81D8D0;
             margin-right: 0.5rem;
         }
-        
+
         .blog-content {
             font-size: 1.1rem;
             line-height: 1.8;
             color: var(--text-color);
         }
-        
+
         .blog-content h2 {
             font-size: 1.8rem;
-            color: var(--primary-color);
+            color: var(--text-bright);
             margin-top: 3rem;
             margin-bottom: 1.5rem;
             text-align: left;
         }
-        
+
         .blog-content h3 {
             font-size: 1.4rem;
-            color: var(--secondary-color);
+            color: #81D8D0;
             margin-top: 2rem;
             margin-bottom: 1rem;
         }
-        
+
         .blog-content p {
             margin-bottom: 1.5rem;
         }
-        
+
         .blog-content ul, .blog-content ol {
             margin-bottom: 1.5rem;
             padding-left: 2rem;
         }
-        
+
         .blog-content li {
             margin-bottom: 0.5rem;
         }
-        
+
         .blog-content code {
-            background: var(--background-color);
+            background: rgba(129, 216, 208, 0.08);
             padding: 0.2rem 0.5rem;
             border-radius: 3px;
             font-family: 'Courier New', monospace;
             font-size: 0.9em;
             color: #81D8D0;
+            border: 1px solid var(--border-color);
         }
-        
+
         .blog-content pre {
-            background: var(--primary-color);
-            color: white;
+            background: #0a1420;
+            color: #c8d8f0;
             padding: 1.5rem;
             border-radius: 4px;
             overflow-x: auto;
             margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
         }
-        
+
         .blog-content pre code {
             background: none;
-            color: white;
+            color: #81D8D0;
             padding: 0;
+            border: none;
         }
-        
+
         .blog-content strong {
-            color: var(--primary-color);
+            color: var(--text-bright);
             font-weight: 600;
         }
-        
+
         .blog-content em {
             color: #81D8D0;
             font-style: italic;
         }
-        
+
         .back-link {
             display: inline-flex;
             align-items: center;
@@ -125,30 +127,35 @@
             margin-bottom: 2rem;
             transition: all 0.3s ease;
         }
-        
+
         .back-link:hover {
             gap: 0.75rem;
         }
-        
+
         .back-link i {
             transition: transform 0.3s ease;
         }
-        
+
         .back-link:hover i {
             transform: translateX(-3px);
         }
-        
+
         @media (max-width: 768px) {
             .blog-post {
                 padding: 2rem 1rem;
             }
-            
+
             .blog-title {
                 font-size: 2rem;
             }
-            
+
             .blog-content {
                 font-size: 1rem;
+            }
+
+            .blog-post-meta {
+                flex-wrap: wrap;
+                gap: 1rem;
             }
         }
     </style>

@@ -8,112 +8,114 @@
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Blog post specific styles */
         .blog-post {
             max-width: 800px;
             margin: 0 auto;
             padding: 4rem 2rem;
         }
-        
-        .blog-header, .blog-post-header {
+
+        .blog-post-header {
             margin-bottom: 3rem;
         }
-        
+
         .blog-title {
             font-size: 2.5rem;
-            color: var(--primary-color);
+            color: var(--text-bright);
             margin-bottom: 1rem;
             line-height: 1.2;
         }
-        
+
         .blog-subtitle {
             font-size: 1.3rem;
-            color: var(--secondary-color);
+            color: var(--text-dim);
             margin-bottom: 2rem;
             font-style: italic;
         }
-        
+
         .blog-post-meta {
             display: flex;
             gap: 2rem;
-            color: var(--secondary-color);
+            color: var(--text-dim);
             font-size: 0.95rem;
             margin-bottom: 2rem;
         }
-        
+
         .blog-post-meta i {
             color: #81D8D0;
             margin-right: 0.5rem;
         }
-        
+
         .blog-content {
             font-size: 1.1rem;
             line-height: 1.8;
             color: var(--text-color);
         }
-        
+
         .blog-content h2 {
             font-size: 1.8rem;
-            color: var(--primary-color);
+            color: var(--text-bright);
             margin-top: 3rem;
             margin-bottom: 1.5rem;
             text-align: left;
         }
-        
+
         .blog-content h3 {
             font-size: 1.4rem;
-            color: var(--secondary-color);
+            color: #81D8D0;
             margin-top: 2rem;
             margin-bottom: 1rem;
         }
-        
+
         .blog-content p {
             margin-bottom: 1.5rem;
         }
-        
+
         .blog-content ul, .blog-content ol {
             margin-bottom: 1.5rem;
             padding-left: 2rem;
         }
-        
+
         .blog-content li {
             margin-bottom: 0.5rem;
         }
-        
+
         .blog-content code {
-            background: var(--background-color);
+            background: rgba(129, 216, 208, 0.08);
             padding: 0.2rem 0.5rem;
             border-radius: 3px;
             font-family: 'Courier New', monospace;
             font-size: 0.9em;
             color: #81D8D0;
+            border: 1px solid var(--border-color);
         }
-        
+
         .blog-content pre {
-            background: var(--primary-color);
-            color: white;
+            background: #0a1420;
+            color: #c8d8f0;
             padding: 1.5rem;
             border-radius: 4px;
             overflow-x: auto;
             margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
         }
-        
+
         .blog-content pre code {
             background: none;
-            color: white;
+            color: #81D8D0;
             padding: 0;
+            border: none;
         }
-        
+
         .blog-content strong {
-            color: var(--primary-color);
+            color: var(--text-bright);
             font-weight: 600;
         }
-        
+
         .blog-content em {
             color: #81D8D0;
             font-style: italic;
         }
-        
+
         .back-link {
             display: inline-flex;
             align-items: center;
@@ -124,30 +126,35 @@
             margin-bottom: 2rem;
             transition: all 0.3s ease;
         }
-        
+
         .back-link:hover {
             gap: 0.75rem;
         }
-        
+
         .back-link i {
             transition: transform 0.3s ease;
         }
-        
+
         .back-link:hover i {
             transform: translateX(-3px);
         }
-        
+
         @media (max-width: 768px) {
             .blog-post {
                 padding: 2rem 1rem;
             }
-            
+
             .blog-title {
                 font-size: 2rem;
             }
-            
+
             .blog-content {
                 font-size: 1rem;
+            }
+
+            .blog-post-meta {
+                flex-wrap: wrap;
+                gap: 1rem;
             }
         }
     </style>
@@ -157,7 +164,7 @@
         <a href="../index.html#blog" class="back-link">
             <i class="fas fa-arrow-left"></i> Back to Portfolio
         </a>
-        
+
         <header class="blog-post-header">
             <h1 class="blog-title">Building a Cloud Engineering Career While My Toddler Destroyed My Sleep Schedule</h1>
             <p class="blog-subtitle">How TikTok, a layoff, and countless sleepless nights led me from operations to cloud engineering</p>
@@ -167,73 +174,73 @@
                 <span><i class="fas fa-tag"></i>Career Journey</span>
             </div>
         </header>
-        
+
         <div class="blog-content">
             <p>I never expected TikTok to change my career.</p>
-            
+
             <p>I was scrolling one night between toddler wake-ups when I found someone talking about AWS cloud engineering. Infrastructure as code. Serverless architectures. It clicked.</p>
-            
+
             <h2>The Before</h2>
-            
+
             <p>15 years in operations and customer service. Managed CRM systems, handled budgets, kept things running. Stable work.</p>
-            
+
             <p>As a stay at home mom, I started learning on the side. My cousin, a software engineer at Google, suggested Linux and Python. I learned vim. No real plan, just wanted to keep learning.</p>
-            
+
             <p>June 2023: I got laid off.</p>
-            
+
             <h2>The Layoff</h2>
-            
+
             <p>Choice: go back to operations or try cloud engineering. Toddler, mortgage, no CS degree.</p>
-            
+
             <p>I went all in on AWS.</p>
-            
+
             <h2>Learning While Broke</h2>
-            
+
             <p>5 AM study sessions. Nap time tutorials. Late night debugging half-asleep.</p>
-            
+
             <p>16 months unemployed. Every dollar counted. Hundreds of applications. Zero offers.</p>
-            
+
             <h2>What I Built</h2>
-            
+
             <p>Cloud Resume Challenge. DynamoDB, API Gateway, Lambda, S3, CloudFront. Migrated to Terraform with OIDC.</p>
-            
+
             <p>Serverless job scraper. Lambda, EventBridge. Built it because I was tired of manually searching Indeed for hours.</p>
-            
+
             <p>NBA Data Lake through Cloud Cozy Discord. S3, Glue, Athena. Game Day notifications with SNS.</p>
-            
+
             <p>ExamPro GenAI bootcamp. Technical blog posts. Helped other career changers.</p>
-            
+
             <p>AWS Solutions Architect exam: 707 out of 720. Failed by 13 points. Retaking January 16th.</p>
-            
+
             <h2>Now</h2>
-            
+
             <p>Production AWS projects. Serverless architectures. Infrastructure as code. Technical blog. 600+ portfolio visitors.</p>
-            
+
             <p>No job yet.</p>
-            
+
             <p>16 months unemployed. Hundreds of applications. Some interviews. No offers.</p>
-            
+
             <p>But I'm not the same person from June 2023. That person knew operations. This person builds cloud architectures and debugs Lambda at 2 AM.</p>
-            
+
             <h2>What I Learned</h2>
-            
+
             <p>You don't need perfect conditions. I had nap times and determination.</p>
-            
+
             <p>Community matters. Cloud Cozy, ExamPro, Discord servers kept me going.</p>
-            
+
             <p>Build real things. I could've watched videos for 16 months. Instead I built projects that solved problems.</p>
-            
+
             <p>Your story is your story. I found AWS through TikTok, learned it during sleep regressions, built while broke. Not bootcamp to FAANG, but it's real.</p>
-            
+
             <p>If you're building a career in stolen moments: you're not behind.</p>
-            
+
             <p>Now if you'll excuse me, I have a cert exam to pass and a toddler demanding snacks.</p>
-            
+
             <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border-color);">
-            
+
             <p><strong>Want to follow my cloud journey?</strong> Check out my portfolio at <a href="https://stratajen.net" target="_blank" style="color: #81D8D0;">stratajen.net</a> or connect with me on <a href="https://www.linkedin.com/in/jennifer-magruder" target="_blank" style="color: #81D8D0;">LinkedIn</a>.</p>
         </div>
-        
+
         <a href="../index.html#blog" class="back-link" style="margin-top: 3rem;">
             <i class="fas fa-arrow-left"></i> Back to Portfolio
         </a>
