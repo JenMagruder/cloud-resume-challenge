@@ -379,8 +379,7 @@ h2 {
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
     padding: 1rem 0.25rem 1.5rem;
-    scrollbar-width: thin;
-    scrollbar-color: #81D8D0 var(--surface-color);
+    scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
     cursor: grab;
 }
@@ -390,17 +389,7 @@ h2 {
 }
 
 .blog-carousel::-webkit-scrollbar {
-    height: 6px;
-}
-
-.blog-carousel::-webkit-scrollbar-track {
-    background: var(--surface-color);
-    border-radius: 3px;
-}
-
-.blog-carousel::-webkit-scrollbar-thumb {
-    background: #81D8D0;
-    border-radius: 3px;
+    display: none;
 }
 
 .blog-preview-card {
