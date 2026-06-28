@@ -86,7 +86,7 @@
         <section id="about" class="section">
             <h2>Who Am I?</h2>
             <div class="about-content">
-                <p class="intro">AWS Certified Solutions Architect, AWS Community Builder (Serverless), and Cloud DevOps Engineer with hands on experience building serverless applications, Infrastructure as Code with Terraform, and automated CI/CD pipelines.</p>
+                <p class="intro">AWS Certified Solutions Architect, AWS Community Builder, and Cloud DevOps Engineer with hands on experience building serverless applications, Infrastructure as Code with Terraform, and automated CI/CD pipelines.</p>
                 <p>I specialize in Python automation, AWS services (Lambda, S3, CloudFront, DynamoDB, API Gateway, SNS, EventBridge), and Infrastructure as Code with Terraform. I focus on building scalable, cost-effective cloud solutions with remote state management and OIDC authentication for secure deployments.</p>
                 <p>Certified AWS Solutions Architect Associate with strong expertise in serverless architecture, DevOps automation, and building tools that solve real problems.</p>
             </div>
@@ -355,25 +355,41 @@
         let startX;
         let scrollLeft;
 
+        // Click and drag
         carousel.addEventListener('mousedown', (e) => {
             isDown = true;
-            carousel.classList.add('active');
             startX = e.pageX - carousel.offsetLeft;
             scrollLeft = carousel.scrollLeft;
+            carousel.style.cursor = 'grabbing';
         });
 
         carousel.addEventListener('mouseleave', () => {
             isDown = false;
-            carousel.classList.remove('active');
+            carousel.style.cursor = 'grab';
         });
 
         carousel.addEventListener('mouseup', () => {
             isDown = false;
-            carousel.classList.remove('active');
+            carousel.style.cursor = 'grab';
         });
 
         carousel.addEventListener('mousemove', (e) => {
-            if (!isDown) return;
+            if (!isDown) {
+                // Hover scroll — edges of carousel trigger scrolling
+                const rect = carousel.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const width = rect.width;
+                const edgeZone = width * 0.25;
+
+                if (x < edgeZone) {
+                    const speed = (edgeZone - x) / edgeZone * 8;
+                    carousel.scrollLeft -= speed;
+                } else if (x > width - edgeZone) {
+                    const speed = (x - (width - edgeZone)) / edgeZone * 8;
+                    carousel.scrollLeft += speed;
+                }
+                return;
+            }
             e.preventDefault();
             const x = e.pageX - carousel.offsetLeft;
             const walk = (x - startX) * 1.5;
