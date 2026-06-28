@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Don't Know Rust But I Ran Oxide's Control Plane Anyway - Jen Magruder</title>
+    <meta name="description" content="A self-taught cloud engineer explores Omicron, the open source control plane for the Oxide rack, using only an EC2 instance and curl commands.">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .blog-post {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .blog-post-header {
+            margin-bottom: 3rem;
+        }
+
+        .blog-title {
+            font-size: 2.5rem;
+            color: var(--text-bright);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .blog-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        .blog-post-meta {
+            display: flex;
+            gap: 2rem;
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+
+        .blog-post-meta i {
+            color: #81D8D0;
+            margin-right: 0.5rem;
+        }
+
+        .blog-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-color);
+        }
+
+        .blog-content h2 {
+            font-size: 1.8rem;
+            color: var(--text-bright);
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .blog-content h3 {
+            font-size: 1.4rem;
+            color: #81D8D0;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .blog-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .blog-content ul, .blog-content ol {
+            margin-bottom: 1.5rem;
+            padding-left: 2rem;
+        }
+
+        .blog-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .blog-content code {
+            background: rgba(129, 216, 208, 0.08);
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #81D8D0;
+            border: 1px solid var(--border-color);
+        }
+
+        .blog-content pre {
+            background: #0a1420;
+            color: #c8d8f0;
+            padding: 1.5rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .blog-content pre code {
+            background: none;
+            color: #81D8D0;
+            padding: 0;
+            border: none;
+        }
+
+        .blog-content strong {
+            color: var(--text-bright);
+            font-weight: 600;
+        }
+
+        .blog-content em {
+            color: #81D8D0;
+            font-style: italic;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #81D8D0;
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            gap: 0.75rem;
+        }
+
+        .back-link i {
+            transition: transform 0.3s ease;
+        }
+
+        .back-link:hover i {
+            transform: translateX(-3px);
+        }
+
+        .component-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+
+        .component-table th {
+            background: rgba(129, 216, 208, 0.1);
+            color: #81D8D0;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border: 1px solid var(--border-color);
+            font-size: 0.95rem;
+        }
+
+        .component-table td {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            font-size: 0.95rem;
+            vertical-align: top;
+        }
+
+        .component-table tr:hover td {
+            background: rgba(129, 216, 208, 0.03);
+        }
+
+        @media (max-width: 768px) {
+            .blog-post {
+                padding: 2rem 1rem;
+            }
+
+            .blog-title {
+                font-size: 2rem;
+            }
+
+            .blog-content {
+                font-size: 1rem;
+            }
+
+            .blog-post-meta {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .component-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <article class="blog-post">
+        <a href="../index.html#blog" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Portfolio
+        </a>
+
+        <header class="blog-post-header">
+            <h1 class="blog-title">I Don't Know Rust But I Ran Oxide's Control Plane Anyway</h1>
+            <p class="blog-subtitle">A self-taught cloud engineer who lives in AWS explores Omicron, the open source control plane for the Oxide rack, using nothing but an EC2 instance and curl commands.</p>
+            <div class="blog-post-meta">
+                <span><i class="far fa-calendar"></i>June 2026</span>
+                <span><i class="far fa-clock"></i>12 min read</span>
+                <span><i class="fas fa-tag"></i>Cloud Infrastructure</span>
+            </div>
+        </header>
+
+        <div class="blog-content">
+
+            <p>I am a self-taught cloud engineer who lives in AWS. Lambda, DynamoDB, CloudFormation, Terraform. That has been my world so far. But I am always curious about what else is out there, and recently I came across Omicron, the open source control plane for the Oxide rack. I did what I always do when I want to understand something: I tried to run it. I do not have an Oxide rack and I do not have Helios, their operating system, but Omicron ships with a simulated mode that runs on Linux. That was enough.</p>
+
+            <h2>What is Oxide?</h2>
+
+            <p>For decades enterprises have had two options for running compute and both required compromise.</p>
+
+            <p>Traditional on-prem gives you ownership but at a cost. You are juggling eight or more vendors across compute, networking, storage, and orchestration. The integrations are brittle, the operations are complex, and when something breaks everyone points fingers at someone else.</p>
+
+            <p>The public cloud gives you speed and integration but at a different cost. You never own anything. You rent forever. The bills are unpredictable, egress fees are punishing, and you are locked into proprietary APIs that make it harder to leave every year.</p>
+
+            <p>Oxide is trying to solve both problems at once. They build a server rack where the hardware, the operating system, and the software are all designed together by the same team. The pitch is that you get the economics and governance of on-prem infrastructure with the developer experience of the public cloud. One purchase, no subscriptions, no surprise bills, setup in an afternoon.</p>
+
+            <p>The brain of that rack is a piece of software called Omicron.</p>
+
+            <h2>What is Omicron?</h2>
+
+            <p>Omicron is the control plane for the Oxide rack. Every API call you make to create an instance, a VPC, or a disk goes through Omicron. It is not one service. It is several components that work together to manage the full lifecycle of resources on the rack. If you live in AWS like I do, most of these have a familiar equivalent.</p>
+
+            <table class="component-table">
+                <thead>
+                    <tr>
+                        <th>Component</th>
+                        <th>What it does</th>
+                        <th>AWS equivalent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Nexus</strong></td>
+                        <td>Main orchestrator — receives every external API request and coordinates the rest of the control plane</td>
+                        <td>AWS control plane</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sled Agent</strong></td>
+                        <td>Runs on each physical server — executes what Nexus decides locally</td>
+                        <td>Hypervisor layer on each EC2 host</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CockroachDB</strong></td>
+                        <td>Stores all state durably — every project, VPC, and instance you create</td>
+                        <td>RDS (for internal bookkeeping)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ClickHouse</strong></td>
+                        <td>Handles telemetry via Oximeter — columnar DB for time series metrics</td>
+                        <td>CloudWatch</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DNS servers</strong></td>
+                        <td>Internal service discovery and external DNS for workload reachability</td>
+                        <td>Route 53 private hosted zones</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>On a real Oxide rack all of these run on Oxide hardware under Helios, their illumos based OS. But Omicron ships with a simulated mode that runs on Linux. That is the door I walked through.</p>
+
+            <h2>Why EC2 and Not My Laptop</h2>
+
+            <p>I already knew my laptop was not going to cut it. I have 16GB of RAM and I had already tried running a local LLM on it and watched it consume 98% of my memory before giving up. A massive Rust workspace with dozens of crates was not going to go any better. So I moved to EC2 before even trying.</p>
+
+            <p>I launched an <code>m5.xlarge</code> on Ubuntu 22.04 with a 100GB EBS volume. The m5.xlarge has 4 vCPUs and 16GB of RAM which gives the Rust compiler enough room to parallelize the build without running out of memory. I picked a fixed instance type instead of a burstable t3 because compilation is sustained CPU work. Burstable instances throttle when you exhaust your CPU credits and a throttled build on a massive workspace is a bad time.</p>
+
+            <h2>Getting It Running</h2>
+
+            <p>After cloning the repo I ran two commands to set up the environment and pull down prerequisites like CockroachDB and ClickHouse binaries:</p>
+
+            <pre><code>source env.sh
+./tools/install_builder_prerequisites.sh</code></pre>
+
+            <p>Then I built the entire workspace:</p>
+
+            <pre><code>cargo build</code></pre>
+
+            <p>I expected this to take around 90 minutes based on what I had read about large Rust workspaces. It finished in under 30. Once the build was done I started the full stack with a single command:</p>
+
+            <pre><code>cargo xtask omicron-dev run-all</code></pre>
+
+            <p>That one command started CockroachDB, ClickHouse, Nexus, a simulated Sled Agent, internal DNS, external DNS, and the management gateway. All of it came up together and printed out every endpoint I needed to start interacting with the system.</p>
+
+            <h2>Talking to the Control Plane</h2>
+
+            <p>With the stack running I authenticated against Nexus using a username and password and started making API calls with curl. No special tooling. Just HTTP.</p>
+
+            <p>I created a project first:</p>
+
+            <pre><code>curl -b /tmp/cookies.txt -X POST http://127.0.0.1:12220/v1/projects \
+  -H "Content-Type: application/json" \
+  -d '{"name": "my-first-project", "description": "testing omicron"}'</code></pre>
+
+            <p>Nexus returned a UUID, a creation timestamp, and a modification timestamp. The project was now stored in CockroachDB.</p>
+
+            <p>Then I created a VPC inside that project:</p>
+
+            <pre><code>curl -b /tmp/cookies.txt -X POST \
+  "http://127.0.0.1:12220/v1/vpcs?project=my-first-project" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "my-first-vpc", "description": "my first vpc", "dns_name": "my-first-vpc"}'</code></pre>
+
+            <p>This is where something clicked for me. I did not ask for any subnets. I just created a VPC. But when I immediately queried the subnets for that VPC there was already a default subnet sitting there:</p>
+
+            <pre><code>{
+  "name": "default",
+  "description": "The default subnet for my-first-vpc",
+  "ipv4_block": "172.30.0.0/22",
+  "ipv6_block": "fd74:c44d:2834::/64"
+}</code></pre>
+
+            <p>Oxide created it automatically. It assigned a proper IPv4 block and carved a /64 out of the VPC IPv6 prefix without me asking. On AWS I would have created the VPC, then created the subnet, chosen the CIDR block, associated it with a route table, and thought about availability zones. Here the control plane made a sensible decision and handled it.</p>
+
+            <p>That pattern kept showing up. Oxide built the complexity in so you do not have to bolt it on yourself.</p>
+
+            <h2>Creating an Instance</h2>
+
+            <p>Before I could create an instance I had to set up an IP pool. In simulated mode there is no pre-configured networking because there is no real rack underneath. On a real Oxide rack an operator configures IP pools during initial setup so the system knows what addresses it is allowed to hand out. In simulated mode I had to do that myself.</p>
+
+            <p>I created a pool, added an address range to it, and linked it to my silo:</p>
+
+            <pre><code>curl -b /tmp/cookies.txt -X POST \
+  "http://127.0.0.1:12220/v1/system/ip-pools" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "default", "description": "default ip pool"}'
+
+curl -b /tmp/cookies.txt -X POST \
+  "http://127.0.0.1:12220/v1/system/ip-pools/default/ranges/add" \
+  -H "Content-Type: application/json" \
+  -d '{"first": "172.20.0.1", "last": "172.20.0.254"}'
+
+curl -b /tmp/cookies.txt -X POST \
+  "http://127.0.0.1:12220/v1/system/ip-pools/default/silos" \
+  -H "Content-Type: application/json" \
+  -d '{"silo": "test-suite-silo", "is_default": true}'</code></pre>
+
+            <p>Then I created the instance:</p>
+
+            <pre><code>curl -b /tmp/cookies.txt -X POST \
+  "http://127.0.0.1:12220/v1/instances?project=my-first-project" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "my-first-instance",
+    "description": "test instance",
+    "hostname": "my-first-instance",
+    "ncpus": 1,
+    "memory": 1073741824,
+    "network_interfaces": {"type": "default_dual_stack"}
+  }'</code></pre>
+
+            <p>Nexus returned the instance with a UUID, the project it belonged to, the CPU and memory allocation, and a run state of stopped. It existed in the control plane and was ready to start.</p>
+
+            <h2>What This Actually Taught Me</h2>
+
+            <p>Running Omicron in simulated mode means the Sled Agent is not managing real hardware. But the control plane logic in Nexus is the same code that runs in production. The state management, the API behavior, the way components register with each other and coordinate — all of it is real.</p>
+
+            <p>What I came away understanding is what a control plane actually does at a deeper level. It is not just an API wrapper around some servers. It is the thing responsible for maintaining desired state across an entire system, making intelligent decisions about resources, storing everything durably so it survives failures, and surfacing a coherent interface so the operator does not have to think about the complexity underneath.</p>
+
+            <p>That last part is what Oxide is really selling. They describe their support philosophy as transparent and open systems with rich telemetry so support issues do not disappear into a void with vendors pointing fingers at each other. Having now seen how the components are structured and how observable the system is, I believe it.</p>
+
+            <p>I ran all of this with curl commands and an EC2 instance that cost me less than ten dollars. The code is on GitHub. Go run it yourself.</p>
+
+            <h2>Resources</h2>
+
+            <ul>
+                <li><a href="https://oxide.computer" target="_blank" style="color: #81D8D0;">Oxide Computer</a></li>
+                <li><a href="https://github.com/oxidecomputer/omicron" target="_blank" style="color: #81D8D0;">Omicron on GitHub</a></li>
+                <li><a href="https://docs.oxide.computer/api" target="_blank" style="color: #81D8D0;">Oxide API Documentation</a></li>
+            </ul>
+
+            <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border-color);">
+
+            <p><strong>Want to see my other projects?</strong> Check out my <a href="https://stratajen.net" target="_blank" style="color: #81D8D0;">portfolio</a> or connect with me on <a href="https://www.linkedin.com/in/jennifer-magruder" target="_blank" style="color: #81D8D0;">LinkedIn</a>.</p>
+        </div>
+
+        <a href="../index.html#blog" class="back-link" style="margin-top: 3rem;">
+            <i class="fas fa-arrow-left"></i> Back to Portfolio
+        </a>
+    </article>
+</body>
+</html>

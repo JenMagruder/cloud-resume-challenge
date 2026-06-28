@@ -364,12 +364,31 @@ h2 {
     font-size: 1.2rem;
 }
 
-/* ── BLOG ── */
-.blog-preview-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2rem;
+/* ── BLOG CAROUSEL ── */
+.blog-carousel {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 1rem 0.25rem 1.5rem;
     margin-top: 2rem;
+    scrollbar-width: thin;
+    scrollbar-color: #81D8D0 var(--surface-color);
+    -webkit-overflow-scrolling: touch;
+}
+
+.blog-carousel::-webkit-scrollbar {
+    height: 6px;
+}
+
+.blog-carousel::-webkit-scrollbar-track {
+    background: var(--surface-color);
+    border-radius: 3px;
+}
+
+.blog-carousel::-webkit-scrollbar-thumb {
+    background: #81D8D0;
+    border-radius: 3px;
 }
 
 .blog-preview-card {
@@ -378,6 +397,8 @@ h2 {
     border-radius: 4px;
     border: 1px solid var(--border-color);
     transition: all 0.3s ease;
+    flex: 0 0 320px;
+    scroll-snap-align: start;
 }
 
 .blog-preview-card:hover {
@@ -385,6 +406,19 @@ h2 {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(129, 216, 208, 0.1);
     background: var(--surface2-color);
+}
+
+.carousel-hint {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    letter-spacing: 0.05em;
+}
+
+.carousel-hint i {
+    color: #81D8D0;
+    font-size: 0.75rem;
 }
 
 .blog-meta {
