@@ -6,7 +6,7 @@ resource "aws_apigatewayv2_api" "visitor_counter" {
   protocol_type = "HTTP"
   
   cors_configuration {
-    allow_origins = ["*"]
+    allow_origins = ["https://stratajen.net"]
     allow_methods = ["POST", "OPTIONS"]
     allow_headers = ["content-type"]
   }
