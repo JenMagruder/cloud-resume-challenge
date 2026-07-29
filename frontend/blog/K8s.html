@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building a Kubernetes Project After a Rejection - Jen Magruder</title>
+    <meta name="description" content="I was not picked for a role because I did not have hands on Kubernetes experience. So I built a project to show I could do the work.">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .blog-post {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .blog-post-header {
+            margin-bottom: 3rem;
+        }
+
+        .blog-title {
+            font-size: 2.5rem;
+            color: var(--text-bright);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .blog-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        .blog-post-meta {
+            display: flex;
+            gap: 2rem;
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .blog-post-meta i {
+            color: #81D8D0;
+            margin-right: 0.5rem;
+        }
+
+        .blog-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-color);
+        }
+
+        .blog-content h2 {
+            font-size: 1.8rem;
+            color: var(--text-bright);
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .blog-content h3 {
+            font-size: 1.4rem;
+            color: #81D8D0;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .blog-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .blog-content ul, .blog-content ol {
+            margin-bottom: 1.5rem;
+            padding-left: 2rem;
+        }
+
+        .blog-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .blog-content code {
+            background: rgba(129, 216, 208, 0.08);
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #81D8D0;
+            border: 1px solid var(--border-color);
+        }
+
+        .blog-content pre {
+            background: #0a1420;
+            color: #c8d8f0;
+            padding: 1.5rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .blog-content pre code {
+            background: none;
+            color: #81D8D0;
+            padding: 0;
+            border: none;
+        }
+
+        .blog-content strong {
+            color: var(--text-bright);
+            font-weight: 600;
+        }
+
+        .blog-content em {
+            color: #81D8D0;
+            font-style: italic;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #81D8D0;
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            gap: 0.75rem;
+        }
+
+        .back-link i {
+            transition: transform 0.3s ease;
+        }
+
+        .back-link:hover i {
+            transform: translateX(-3px);
+        }
+
+        .github-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            background: rgba(129, 216, 208, 0.1);
+            border: 1px solid #81D8D0;
+            border-radius: 4px;
+            color: #81D8D0;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+            display: inline-flex;
+        }
+
+        .github-link:hover {
+            background: #81D8D0;
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .blog-post {
+                padding: 2rem 1rem;
+            }
+
+            .blog-title {
+                font-size: 2rem;
+            }
+
+            .blog-content {
+                font-size: 1rem;
+            }
+
+            .blog-post-meta {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <article class="blog-post">
+        <a href="../index.html#blog" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Portfolio
+        </a>
+
+        <header class="blog-post-header">
+            <h1 class="blog-title">Building a Kubernetes Project After a Rejection</h1>
+            <p class="blog-subtitle">I was not picked for a role because I did not have hands on Kubernetes experience. So I built a project to show I could do the work.</p>
+            <div class="blog-post-meta">
+                <span><i class="far fa-calendar"></i>July 2026</span>
+                <span><i class="far fa-clock"></i>6 min read</span>
+                <span><i class="fas fa-tag"></i>Kubernetes</span>
+            </div>
+            <a href="https://github.com/JenMagruder/k8s-security-audit" target="_blank" rel="noopener noreferrer" class="github-link">
+                <i class="fab fa-github"></i> View on GitHub
+            </a>
+        </header>
+
+        <div class="blog-content">
+
+            <p>Earlier this month, I was not picked for a role because I did not have hands on Kubernetes experience. While I was waiting to hear back on a different cybersecurity opportunity, I wanted to actually show I could work with Kubernetes and think like someone doing remediation work, not just talk about the concepts on a resume.</p>
+
+            <p>So I built a small Kubernetes security project. A Python script scans a running cluster for two common issues: containers running as root, and containers with no resource limits set. I set up two test pods, one insecure and one fixed, so the difference shows up in the same scan.</p>
+
+            <h2>Starting Local</h2>
+
+            <p>I started local with minikube, since that is a safe, free place to actually break things on purpose. The insecure pod had nothing protecting it at all, no security context, no resource limits, exactly the kind of setup that ships by default if nobody thinks to lock it down. Once the script caught both issues on it, I built a fixed version.</p>
+
+            <p>The first attempt used the standard nginx image, but that image is built to run as root internally, so it failed the moment I locked it down to run as non root. Switched to <code>nginxinc/nginx-unprivileged</code>, an image built specifically for that, and it started up clean. That was a good reminder that locking something down for security is not always a clean, one step fix. Sometimes fixing one thing breaks something else that was quietly depending on the old, less secure behavior.</p>
+
+            <h2>Helm Chart</h2>
+
+            <p>From there, I packaged both pods into a single Helm chart instead of keeping two separate YAML files around. One template with a setting that toggles the security fixes on or off. I went with a full Deployment, complete with liveness and readiness probes, rather than a stripped down version, since that is closer to what I would actually use on the job.</p>
+
+            <p>Deploying it hit another snag, a crash loop this time, caused by a mismatch between the health check port and the port the new image actually listens on. Checking the pod logs showed nginx starting up fine and then getting shut down by Kubernetes itself, not a code crash, a health check failure. Once I lined the probe's port up with the image's real port, it came up healthy.</p>
+
+            <h2>Moving to EKS</h2>
+
+            <p>Last step was taking the same setup out of minikube and onto an AWS EKS cluster, provisioned with CloudFormation. Same Helm chart, same script, same results, just on cloud infrastructure instead of my laptop.</p>
+
+            <p>Getting there was not friction free either. My first CloudFormation attempt failed because the Kubernetes version I had defaulted to had already been deprecated by AWS, a small reminder that infrastructure as code still needs to track what a cloud provider actually supports at any given moment.</p>
+
+            <p>I also wrote a small Lambda function that checks in on the cluster's status directly, keeping its permissions scoped to just that one cluster by ARN. Same least privilege habit I already use everywhere else in my AWS work.</p>
+
+            <p>I tore both the EKS cluster and the Lambda stack down once I confirmed everything worked, since they were only ever meant to exist for testing, not to sit there running and racking up cost.</p>
+
+            <h2>What I Took Away</h2>
+
+            <p>I did not get that role either. But I walked away from this month with a project I can actually point to: a script, a Helm chart, a cluster I stood up and tore down myself, and a couple of bugs I found and fixed along the way.</p>
+
+            <p>That is worth more to me than a line on a resume saying I know Kubernetes.</p>
+
+            <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border-color);">
+
+            <p><a href="https://github.com/JenMagruder/k8s-security-audit" target="_blank" rel="noopener noreferrer" style="color: #81D8D0;">View the full project on GitHub</a> or connect with me on <a href="https://www.linkedin.com/in/jennifer-magruder" target="_blank" rel="noopener noreferrer" style="color: #81D8D0;">LinkedIn</a>.</p>
+
+        </div>
+
+        <a href="../index.html#blog" class="back-link" style="margin-top: 3rem;">
+            <i class="fas fa-arrow-left"></i> Back to Portfolio
+        </a>
+    </article>
+</body>
+</html>

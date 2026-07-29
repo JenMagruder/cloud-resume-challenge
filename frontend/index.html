@@ -136,6 +136,16 @@
                     <h3>Machine Learning</h3>
                     <p>PyTorch, Neural Networks, Computer Vision, and OCR implementation</p>
                 </a>
+                <a href="https://www.docker.com/" class="skill-box" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-docker"></i>
+                    <h3>Docker</h3>
+                    <p>Containerizing applications for portable, consistent local development and deployment</p>
+                </a>
+                <a href="https://kubernetes.io/" class="skill-box" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-dharmachakra"></i>
+                    <h3>Kubernetes</h3>
+                    <p>Container orchestration, Helm charts, security contexts, EKS deployments on AWS</p>
+                </a>
                 <a href="https://aws.amazon.com/architecture/" class="skill-box" target="_blank" rel="noopener noreferrer">
                     <i class="fas fa-project-diagram"></i>
                     <h3>Architecture & APIs</h3>
@@ -169,6 +179,23 @@
             <div class="project-grid">
                 <div class="project-section">
                     <h3 class="section-title">Cloud & Infrastructure</h3>
+
+                    <div class="project-card">
+                        <h3>Kubernetes Security Audit</h3>
+                        <p>Built a Python script that scans a running Kubernetes cluster for common security misconfigurations — containers running as root and containers with no resource limits set. Used two test pods side by side, one insecure and one fixed, so the difference shows up in the same scan. Packaged both into a single Helm chart with a toggle that switches security controls on or off. Deployed locally with minikube first, then to a real AWS EKS cluster provisioned with CloudFormation. Added a Lambda function with IAM permissions scoped to a single cluster by ARN to confirm live cluster connectivity. Tore everything down after confirming it worked.</p>
+                        <div class="tech-stack">
+                            <span><i class="fab fa-aws"></i> EKS</span>
+                            <span><i class="fab fa-aws"></i> Lambda</span>
+                            <span><i class="fab fa-aws"></i> CloudFormation</span>
+                            <span><i class="fab fa-python"></i> Python</span>
+                            <span><i class="fas fa-dharmachakra"></i> Kubernetes</span>
+                            <span><i class="fas fa-hat-wizard"></i> Helm</span>
+                            <span><i class="fas fa-lock"></i> IAM</span>
+                        </div>
+                        <a href="https://github.com/JenMagruder/k8s-security-audit" target="_blank" rel="noopener noreferrer" class="project-link">
+                            <i class="fab fa-github"></i> View Project
+                        </a>
+                    </div>
 
                     <div class="project-card">
                         <h3>Serverless Job Alert System</h3>
@@ -278,6 +305,18 @@
             <h2>Blog</h2>
             <div class="blog-carousel-wrapper">
             <div class="blog-carousel">
+                <div class="blog-preview-card">
+                    <div class="blog-meta">
+                        <span class="blog-date">July 2026</span>
+                        <span class="blog-category">Kubernetes</span>
+                    </div>
+                    <h3>Building a Kubernetes Project After a Rejection</h3>
+                    <p class="blog-excerpt">I was not picked for a role because I did not have hands on Kubernetes experience. So I built a project to show I could do the work.</p>
+                    <a href="blog/k8s.html" class="blog-read-more">
+                        Read More <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
                 <div class="blog-preview-card">
                     <div class="blog-meta">
                         <span class="blog-date">July 2026</span>
