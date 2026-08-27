@@ -48,6 +48,12 @@
                 </a>
             </li>
             <li>
+                <a href="#speaking" class="bubble-link" data-section="speaking">
+                    <i class="fas fa-microphone"></i>
+                    <span class="tooltip">Summit</span>
+                </a>
+            </li>
+            <li>
                 <a href="#connect" class="bubble-link" data-section="connect">
                     <i class="fas fa-envelope"></i>
                     <span class="tooltip">Connect</span>
@@ -182,7 +188,7 @@
 
                     <div class="project-card">
                         <h3>Kubernetes Security Audit</h3>
-                        <p>Built a Python script that scans a running Kubernetes cluster for common security misconfigurations — containers running as root and containers with no resource limits set. Used two test pods side by side, one insecure and one fixed, so the difference shows up in the same scan. Packaged both into a single Helm chart with a toggle that switches security controls on or off. Deployed locally with minikube first, then to a real AWS EKS cluster provisioned with CloudFormation. Added a Lambda function with IAM permissions scoped to a single cluster by ARN to confirm live cluster connectivity. Tore everything down after confirming it worked.</p>
+                        <p>Built a Python script that scans a running Kubernetes cluster for common security misconfigurations, specifically containers running as root and containers with no resource limits set. Used two test pods side by side, one insecure and one secure, so the difference shows up in the same scan. Packaged both into a single Helm chart with a toggle that switches security controls on or off. Deployed locally with minikube first, then to an AWS EKS cluster provisioned with CloudFormation. Added a Lambda function with IAM permissions scoped to a single cluster by ARN to confirm live cluster connectivity. Tore everything down after confirming it worked.</p>
                         <div class="tech-stack">
                             <span><i class="fab fa-aws"></i> EKS</span>
                             <span><i class="fab fa-aws"></i> Lambda</span>
@@ -296,6 +302,28 @@
                         <a href="https://github.com/JenMagruder/free-genai-bootcamp-2025" target="_blank" rel="noopener noreferrer" class="project-link">
                             <i class="fab fa-github"></i> View Project
                         </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="speaking" class="section">
+            <h2>Speaker at AWS DC Summit</h2>
+            <div class="speaking-content">
+                <div class="talk-card">
+                    <div class="talk-meta">
+                        <span class="talk-date">June 2026</span>
+                    </div>
+                    <h3 class="talk-title">From Mom to Self Taught Cloud Engineer</h3>
+                    <p class="talk-desc">Developer Demo at AWS DC Summit. Half story, half live demo. A brand new format for the Developer Demos stage. The video is short because this was a 3 person Developer Demo and my time was shared with two other speakers.</p>
+                    <div class="video-wrapper">
+                        <iframe
+                            src="https://www.youtube.com/embed/WAXUUPfwFNQ"
+                            title="Automating Your Job Search with AWS Serverless - Jen Magruder at AWS DC Summit"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                        </iframe>
                     </div>
                 </div>
             </div>
