@@ -412,20 +412,18 @@ h2 {
 }
 
 .video-wrapper {
-    position: relative;
-    padding-bottom: 56.25%;
-    height: 0;
-    overflow: hidden;
+    width: 100%;
+    max-width: 700px;
+    aspect-ratio: 16 / 9;
     border-radius: 4px;
     border: 1px solid var(--border-color);
+    overflow: hidden;
 }
 
 .video-wrapper iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
+    display: block;
 }
 
 /* ── BLOG CAROUSEL ── */
